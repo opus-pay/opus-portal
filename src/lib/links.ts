@@ -31,3 +31,16 @@ export function footerLinks(
         github: trim(env.NEXT_PUBLIC_GITHUB_URL, DEFAULT_GITHUB),
     };
 }
+
+/**
+ * The "list your service" contact as a mail link, or `undefined` when no address is set (or it is not an e-mail
+ * address), in which case the page shows no button. Listing is by agreement, so there is no form and no sign-up.
+ */
+export function listingContact(
+    env: Record<string, string | undefined> = { NEXT_PUBLIC_CONTACT_EMAIL: process.env.NEXT_PUBLIC_CONTACT_EMAIL }
+): string | undefined {
+    const email = env.NEXT_PUBLIC_CONTACT_EMAIL?.trim();
+    return email !== undefined && /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(email)
+        ? `mailto:${email}?subject=${encodeURIComponent("OPUS Portal listing")}`
+        : undefined;
+}

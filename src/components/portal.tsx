@@ -1,5 +1,6 @@
 "use client";
 
+import { listingContact } from "../lib/links";
 import { SERVICES } from "../lib/services";
 import { Footer } from "./footer";
 import { LanguageSelect, useLocale } from "./locale";
@@ -9,6 +10,7 @@ import { WalletButton } from "./wallet-button";
 /** The whole page: the wallet at the top, the services in the middle, the whitepaper, architecture and GitHub below. */
 export function Portal() {
     const { t } = useLocale();
+    const contact = listingContact();
     return (
         <div className="flex min-h-dvh flex-col">
             <header className="sticky top-0 z-20 border-b border-line bg-canvas/90 backdrop-blur">
@@ -45,6 +47,17 @@ export function Portal() {
                         {SERVICES.map((service) => (
                             <ServiceCard key={service.id} service={service} />
                         ))}
+                    </div>
+                    <div className="mx-auto flex max-w-[40rem] flex-col items-center gap-3 pt-2 text-center">
+                        <p className="m-0 text-[14px] leading-relaxed text-muted">{t("listing.note")}</p>
+                        {contact !== undefined && (
+                            <a
+                                href={contact}
+                                className="inline-flex h-10 items-center rounded-lg border border-line bg-surface px-4 text-[14.5px] font-semibold text-ink no-underline hover:border-accent hover:text-accent"
+                            >
+                                {t("listing.cta")}
+                            </a>
+                        )}
                     </div>
                 </section>
             </main>

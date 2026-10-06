@@ -34,6 +34,9 @@ const en = {
     "hero.intro":
         "OPUS is an open escrow: money is locked in a contract and moves only by its rules. Each service below uses it in its own way. The Portal only lists them. It does not match people and it never holds money.",
     "services.title": "Services",
+    "listing.note":
+        "Services are listed after the OPUS team has talked with them and agreed terms. Anyone can build on OPUS, but only agreed services appear here.",
+    "listing.cta": "List your service",
     "status.live": "Open",
     "status.planned": "Planned",
     "card.go": "Go to {name}",
@@ -72,6 +75,9 @@ const ko: Record<MessageKey, string> = {
     "hero.intro":
         "OPUS는 열린 에스크로입니다. 돈은 컨트랙트에 잠기고 그 규칙에 따라서만 움직입니다. 아래 서비스는 저마다의 방식으로 OPUS를 씁니다. 포털은 서비스를 나열할 뿐 사람을 연결하지 않고 돈도 맡지 않습니다.",
     "services.title": "서비스",
+    "listing.note":
+        "서비스는 OPUS 팀과 이야기를 나누고 조건에 합의한 뒤에 목록에 올라갑니다. 누구나 OPUS 위에 서비스를 만들 수 있지만, 이 목록에는 합의한 서비스만 나옵니다.",
+    "listing.cta": "서비스 등록 문의",
     "status.live": "이용 가능",
     "status.planned": "준비 중",
     "card.go": "{name}으로 이동",
@@ -108,6 +114,9 @@ const ja: Record<MessageKey, string> = {
     "hero.intro":
         "OPUSはオープンなエスクローです。お金はコントラクトにロックされ、そのルールでのみ動きます。下のサービスはそれぞれのやり方でOPUSを使います。ポータルはサービスを並べるだけで、人を引き合わせることも、お金を預かることもしません。",
     "services.title": "サービス",
+    "listing.note":
+        "サービスは、OPUSチームと話し合い、条件に合意した後に掲載されます。誰でもOPUSの上にサービスを作れますが、ここに載るのは合意したサービスだけです。",
+    "listing.cta": "掲載のお問い合わせ",
     "status.live": "利用可能",
     "status.planned": "準備中",
     "card.go": "{name}へ移動",
@@ -143,6 +152,9 @@ const zh: Record<MessageKey, string> = {
     "hero.intro":
         "OPUS 是开放的托管：资金锁定在合约中，只按合约规则流转。下面的每个服务都以自己的方式使用它。门户只负责列出服务，不撮合任何人，也从不保管资金。",
     "services.title": "服务",
+    "listing.note":
+        "服务在与 OPUS 团队沟通并商定条款后才会被列出。任何人都可以在 OPUS 上构建服务，但这里只显示已达成协议的服务。",
+    "listing.cta": "申请列入",
     "status.live": "可用",
     "status.planned": "筹备中",
     "card.go": "前往 {name}",
