@@ -1,39 +1,58 @@
 import { expect } from "chai";
 
 import { LOCALES, MESSAGES } from "../src/lib/i18n";
-import { descKey, isOpen, isWebAddress, nameKey, SERVICES, type Service } from "../src/lib/services";
+import { descKey, isOpen, isWebAddress, SERVICES, type Service } from "../src/lib/services";
 
 describe("service list", () => {
-    it("names and describes every service in every language", () => {
+    it("describes every service in every language", () => {
         for (const locale of LOCALES)
-            for (const service of SERVICES) {
-                expect(MESSAGES[locale][nameKey(service.id)], `${locale} ${service.id} name`)
+            for (const service of SERVICES)
+                expect(MESSAGES[locale][descKey(service.id)], `${locale} ${service.id}`)
                     .to.be.a("string")
                     .and.not.equal("");
-                expect(MESSAGES[locale][descKey(service.id)], `${locale} ${service.id} desc`)
-                    .to.be.a("string")
-                    .and.not.equal("");
-            }
     });
 
-    it("lists each service once and starts with WayHand", () => {
+    it("has no description left over for a service that is gone", () => {
+        const wanted = SERVICES.map((s) => descKey(s.id)).sort();
+        for (const locale of LOCALES)
+            expect(
+                Object.keys(MESSAGES[locale])
+                    .filter((k) => k.startsWith("service."))
+                    .sort(),
+                locale
+            ).to.deep.equal(wanted);
+    });
+
+    it("lists each service once, with a name, and starts with WayHand", () => {
         const ids = SERVICES.map((s) => s.id);
         expect(new Set(ids).size).to.equal(ids.length);
         expect(ids[0]).to.equal("wayhand");
+        for (const service of SERVICES) expect(service.name.trim(), service.id).to.not.equal("");
     });
 
-    it("lets a visitor open only a live service with a web address", () => {
-        const wayhand: Service = { id: "wayhand", status: "live", url: "https://wayhand.example" };
+    it("keeps WayHand the only active service, and the other eight planned", () => {
+        expect(SERVICES.filter((s) => s.status === "active").map((s) => s.id)).to.deep.equal(["wayhand"]);
+        expect(SERVICES.filter((s) => s.status === "planned")).to.have.length(8);
+    });
+
+    it("opens WayHand at wayhand.net unless the build says otherwise", () => {
+        expect(SERVICES[0].href).to.equal(process.env.NEXT_PUBLIC_WAYHAND_URL?.trim() || "https://wayhand.net");
+        expect(isOpen(SERVICES[0])).to.equal(true);
+    });
+
+    it("lets a visitor open only an active service with a web address", () => {
+        const wayhand: Service = { id: "wayhand", name: "WayHand", status: "active", href: "https://wayhand.net" };
         expect(isOpen(wayhand)).to.equal(true);
-        expect(isOpen({ ...wayhand, url: undefined })).to.equal(false);
-        expect(isOpen({ ...wayhand, url: "" })).to.equal(false);
-        expect(isOpen({ ...wayhand, url: "javascript:alert(1)" })).to.equal(false);
+        expect(isOpen({ ...wayhand, href: undefined })).to.equal(false);
+        expect(isOpen({ ...wayhand, href: "" })).to.equal(false);
+        expect(isOpen({ ...wayhand, href: "#" })).to.equal(false);
+        expect(isOpen({ ...wayhand, href: "javascript:alert(1)" })).to.equal(false);
         expect(isOpen({ ...wayhand, status: "planned" })).to.equal(false);
     });
 
     it("keeps every planned service closed, even if an address is given", () => {
         for (const service of SERVICES.filter((s) => s.status === "planned"))
-            expect(isOpen({ ...service, url: "https://example.com" })).to.equal(false);
+            expect(isOpen({ ...service, href: "https://example.com" })).to.equal(false);
     });
 
     it("accepts only http and https addresses", () => {

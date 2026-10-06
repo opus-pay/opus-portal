@@ -21,9 +21,9 @@ jobs:
             - name: Build the static site
               run: yarn build
               env:
-                  NEXT_PUBLIC_WAYHAND_URL: https://wayhand.example
-            - name: The built page links WayHand and shows the five planned services as closed boxes
+                  NEXT_PUBLIC_WAYHAND_URL: ""
+            - name: The built page links WayHand and links WayHand at wayhand.net and shows the eight planned services as closed boxes
               run: |
                   test -f out/index.html
-                  grep -q 'href="https://wayhand.example"' out/index.html
-                  test "$(grep -o 'aria-disabled="true"' out/index.html | wc -l)" = 5
+                  grep -q 'href="https://wayhand.net"' out/index.html
+                  test "$(grep -o 'aria-disabled="true"' out/index.html | wc -l)" = 8

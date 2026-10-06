@@ -1,6 +1,6 @@
 "use client";
 
-import { descKey, isOpen, nameKey, type Service } from "../lib/services";
+import { descKey, isOpen, type Service } from "../lib/services";
 import { useLocale } from "./locale";
 
 const BASE = "flex h-full flex-col gap-3 rounded-2xl border p-5";
@@ -11,7 +11,7 @@ const BASE = "flex h-full flex-col gap-3 rounded-2xl border p-5";
  */
 export function ServiceCard({ service }: { service: Service }) {
     const { t } = useLocale();
-    const name = t(nameKey(service.id));
+    const name = service.name;
     const open = isOpen(service);
     const body = (
         <>
@@ -31,7 +31,7 @@ export function ServiceCard({ service }: { service: Service }) {
     if (open) {
         return (
             <a
-                href={service.url}
+                href={service.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t("card.go", { name })}
