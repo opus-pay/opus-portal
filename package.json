@@ -1,0 +1,43 @@
+{
+    "name": "opus-portal",
+    "version": "0.1.0",
+    "description": "OPUS Portal: a directory of services built on the OPUS escrow. It lists services and connects a wallet; it matches no one and holds no money.",
+    "private": true,
+    "license": "UNLICENSED",
+    "scripts": {
+        "dev": "next dev --port 3200",
+        "build": "next build",
+        "start": "npx serve out -l 3200",
+        "test": "TS_NODE_PROJECT=tsconfig.mocha.json mocha --require ts-node/register 'test/**/*.ts'",
+        "lint": "tsc -p tsconfig.json --noEmit",
+        "formatting:check": "prettier '**/*.{json,ts,tsx,css}' -c",
+        "formatting:write": "prettier '**/*.{json,ts,tsx,css}' --write"
+    },
+    "dependencies": {
+        "@tanstack/react-query": "^5.104.0",
+        "@walletconnect/ethereum-provider": "^2.21.1",
+        "next": "^16.3.7",
+        "react": "^19.3.0",
+        "react-dom": "^19.3.0",
+        "viem": "^2.37.5",
+        "wagmi": "^3.7.7"
+    },
+    "devDependencies": {
+        "@tailwindcss/postcss": "^4.3.3",
+        "@types/chai": "^4.3.11",
+        "@types/mocha": "^10.0.6",
+        "@types/node": "^22.10.0",
+        "@types/react": "^19.2.2",
+        "@types/react-dom": "^19.2.2",
+        "chai": "^4.3.10",
+        "mocha": "^10.3.0",
+        "postcss": "^8.5.6",
+        "prettier": "^2.8.8",
+        "tailwindcss": "^4.3.3",
+        "ts-node": "^10.9.2",
+        "typescript": "5.9.3"
+    },
+    "engines": {
+        "node": ">=22"
+    }
+}

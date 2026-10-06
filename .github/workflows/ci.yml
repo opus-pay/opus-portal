@@ -1,0 +1,29 @@
+name: ci
+
+on:
+    pull_request:
+    push:
+        branches: [main]
+
+jobs:
+    check:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: yarn
+            - run: yarn install --frozen-lockfile
+            - run: yarn formatting:check
+            - run: yarn lint
+            - run: yarn test
+            - name: Build the static site
+              run: yarn build
+              env:
+                  NEXT_PUBLIC_WAYHAND_URL: https://wayhand.example
+            - name: The built page links WayHand and shows the five planned services as closed boxes
+              run: |
+                  test -f out/index.html
+                  grep -q 'href="https://wayhand.example"' out/index.html
+                  test "$(grep -o 'aria-disabled="true"' out/index.html | wc -l)" = 5
