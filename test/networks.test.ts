@@ -54,7 +54,7 @@ describe("network information", () => {
         expect(mainnet.lookalike?.address).to.not.equal(mainnet.usdc.address);
         // nothing is deployed on the main network yet, so the page says so
         expect(mainnet.contracts).to.equal(null);
-        expect(amoy.contracts?.factory).to.equal("0xeafFF7cCe71b66dB91c40d09640ae9ae854707ca");
+        expect(amoy.contracts?.factory).to.equal("0x8Cae2EBe1b3D13e3EAf9Fc765a577dc30c6a5218");
     });
 
     it("builds the three wallet requests (EIP-3085, EIP-3326, EIP-747)", () => {

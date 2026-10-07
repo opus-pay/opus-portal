@@ -47,10 +47,10 @@ export const NETWORKS: readonly Network[] = [
         explorer: "https://amoy.polygonscan.com",
         usdc: { name: "USD Coin", symbol: "USDC", decimals: 6, address: "0x41E94Eb019C0762f9Bfcf9Fb1E58725BfB0e7582" },
         contracts: {
-            factory: "0xeafFF7cCe71b66dB91c40d09640ae9ae854707ca",
-            instance: "0x7632d054BfE635A1f0394fbcd74678B6567213Fd",
-            evaluator: "0x65819D9199144a66EC17Ad39da6bebabc3eEF585",
-            forwarder: "0x2042172c8b638f1720A1c468726dbd167d62E63f",
+            factory: "0x8Cae2EBe1b3D13e3EAf9Fc765a577dc30c6a5218",
+            instance: "0x4D54D2BD919024742070c63878903483d456d3fC",
+            evaluator: "0x8A4a02D544145ed668b059A7A1753E1f4470da3B",
+            forwarder: "0xD1172323dc6B5C39f8F015C0C3ada071079c830C",
         },
         faucets: [
             { label: "network.faucet.pol", href: "https://faucet.polygon.technology" },
