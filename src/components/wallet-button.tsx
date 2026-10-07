@@ -45,7 +45,7 @@ export function WalletButton() {
         const network = chainId === undefined ? undefined : NETWORKS[chainId];
         return (
             <div className="flex items-center gap-2" aria-label={t("wallet.connected")}>
-                <span className="inline-flex h-10 items-center gap-2 rounded-lg border border-line bg-surface px-3 text-[14px] font-medium">
+                <span className="inline-flex h-10 items-center gap-1.5 whitespace-nowrap rounded-lg border border-line bg-surface px-2 text-[13px] font-medium sm:gap-2 sm:px-3 sm:text-[14px]">
                     <span aria-hidden className="h-2 w-2 rounded-full bg-money" />
                     <span className="font-mono" title={displayAddress(address)}>
                         {shortAddress(address)}
@@ -53,17 +53,23 @@ export function WalletButton() {
                     <a
                         href="/network/"
                         title={t("nav.network")}
-                        className="hidden text-muted no-underline hover:text-ink hover:underline sm:inline"
+                        className={`hidden no-underline hover:underline sm:inline ${
+                            network === undefined ? "font-semibold text-warn" : "text-muted hover:text-ink"
+                        }`}
                     >
-                        {network ?? t("nav.network")}
+                        {network ?? `${t("nav.network")} ⚠`}
                     </a>
                 </span>
                 <button
                     type="button"
-                    className="h-10 rounded-lg border border-line bg-surface px-3 text-[14px] font-medium text-ink-soft hover:border-ink-soft"
+                    className="h-10 shrink-0 whitespace-nowrap rounded-lg border border-line bg-surface px-2.5 text-[14px] font-medium text-ink-soft hover:border-ink-soft sm:px-3"
+                    aria-label={t("wallet.disconnect")}
                     onClick={() => disconnect()}
                 >
-                    {t("wallet.disconnect")}
+                    <span aria-hidden className="sm:hidden">
+                        ✕
+                    </span>
+                    <span className="hidden sm:inline">{t("wallet.disconnect")}</span>
                 </button>
             </div>
         );

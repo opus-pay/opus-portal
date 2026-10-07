@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { Footer } from "./footer";
 import { LanguageSelect, useLocale } from "./locale";
 import { Logo } from "./logo";
+import { NetworkWarning } from "./network-warning";
 import { WalletButton } from "./wallet-button";
 
 /** The header (name, language, wallet) and the footer shared by every page. */
@@ -23,6 +24,7 @@ export function Frame({ children }: { children: ReactNode }) {
                     </div>
                 </div>
             </header>
+            <NetworkWarning />
             {children}
             <Footer />
         </div>

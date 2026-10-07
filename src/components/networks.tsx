@@ -57,7 +57,15 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
     );
 }
 
-function NetworkCard({ network, provider }: { network: Network; provider: () => Promise<Eip1193 | undefined> }) {
+function NetworkCard({
+    network,
+    provider,
+    current,
+}: {
+    network: Network;
+    provider: () => Promise<Eip1193 | undefined>;
+    current: boolean;
+}) {
     const { t } = useLocale();
     const [busy, setBusy] = useState(false);
     const [status, setStatus] = useState<MessageKey | null>(null);
@@ -92,6 +100,7 @@ function NetworkCard({ network, provider }: { network: Network; provider: () => 
                     {network.testnet ? t("network.testnet") : t("network.mainnet")}
                 </span>
             </div>
+            {current && <p className="m-0 text-[14px] font-semibold text-money-ink">✓ {t("network.current")}</p>}
             {network.testnet && <p className="m-0 text-[14px] text-muted">{t("network.testnet.note")}</p>}
 
             <div className="flex flex-wrap gap-2">
@@ -196,7 +205,7 @@ function NetworkCard({ network, provider }: { network: Network; provider: () => 
 /** Network settings and the USDC token for a wallet, with buttons to add them, switch, and add the token. */
 export function Networks() {
     const { t } = useLocale();
-    const { connector } = useAccount();
+    const { connector, chainId } = useAccount();
 
     /** The connected wallet's provider; else the browser's own wallet; else nothing. */
     const provider = async (): Promise<Eip1193 | undefined> => {
@@ -224,7 +233,12 @@ export function Networks() {
 
                 <div className="flex flex-col gap-6">
                     {NETWORKS.map((network) => (
-                        <NetworkCard key={network.id} network={network} provider={provider} />
+                        <NetworkCard
+                            key={network.id}
+                            network={network}
+                            provider={provider}
+                            current={chainId === network.chainId}
+                        />
                     ))}
                 </div>
 

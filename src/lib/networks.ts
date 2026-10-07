@@ -99,3 +99,11 @@ export function watchUsdcRequest(n: Network): WalletRequest {
 }
 
 export const explorerAddress = (n: Network, address: string): string => `${n.explorer}/address/${address}`;
+
+/** The network of a chain id, or undefined when OPUS does not run there. */
+export const networkOf = (chainId: number | undefined): Network | undefined =>
+    NETWORKS.find((n) => n.chainId === chainId);
+
+/** A connected wallet on any chain other than Polygon or Polygon Amoy needs a warning. */
+export const isUnsupportedChain = (chainId: number | undefined): boolean =>
+    chainId !== undefined && networkOf(chainId) === undefined;

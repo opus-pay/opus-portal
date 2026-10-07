@@ -6,7 +6,9 @@ import {
     addChainRequest,
     explorerAddress,
     hexChainId,
+    isUnsupportedChain,
     NETWORKS,
+    networkOf,
     switchChainRequest,
     watchUsdcRequest,
 } from "../src/lib/networks";
@@ -128,5 +130,25 @@ describe("wallet actions", () => {
         expect(
             await switchNetwork(fakeWallet({ wallet_switchEthereumChain: [coded(4001)] }).provider, mainnet)
         ).to.equal("rejected");
+    });
+});
+
+describe("the wrong-network warning", () => {
+    it("warns for any chain except Polygon and Polygon Amoy, and for nothing when there is no chain", () => {
+        expect(isUnsupportedChain(137)).to.equal(false);
+        expect(isUnsupportedChain(80002)).to.equal(false);
+        for (const other of [1, 56, 10, 8453, 42161, 31337, 80001]) {
+            expect(isUnsupportedChain(other), String(other)).to.equal(true);
+        }
+        expect(isUnsupportedChain(undefined)).to.equal(false);
+        expect(networkOf(137)?.name).to.equal("Polygon");
+        expect(networkOf(1)).to.equal(undefined);
+    });
+
+    it("says in every language what is wrong and keeps the chain id slot", () => {
+        for (const locale of LOCALES) {
+            const m = MESSAGES[locale];
+            expect(m["network.warn.text"], locale).to.contain("{chainId}").and.to.contain("Polygon");
+        }
     });
 });

@@ -177,6 +177,12 @@ const en = {
     "network.verify.link": "Circle's list of USDC addresses",
     "network.disclaimer":
         "Adding a network or a token asks your wallet for permission. It moves no money and signs nothing. Only add networks you trust.",
+    "network.warn.text":
+        "Your wallet is on a network OPUS does not use (chain ID {chainId}). Switch to Polygon, or to Polygon Amoy for tests. Money sent on another network can be lost.",
+    "network.warn.switch": "Switch to Polygon",
+    "network.warn.amoy": "Use the test network",
+    "network.warn.more": "Network settings",
+    "network.current": "Your wallet is on this network",
 } as const;
 
 export type MessageKey = keyof typeof en;
@@ -334,6 +340,12 @@ const ko: Record<MessageKey, string> = {
     "network.verify.link": "Circle의 USDC 주소 목록",
     "network.disclaimer":
         "네트워크나 토큰을 추가하면 지갑이 허락을 묻습니다. 돈이 움직이거나 서명하는 일은 없습니다. 믿을 수 있는 네트워크만 추가하세요.",
+    "network.warn.text":
+        "지갑이 OPUS가 쓰지 않는 네트워크에 있습니다 (체인 ID {chainId}). Polygon으로 바꾸세요. 시험할 때는 Polygon Amoy입니다. 다른 네트워크로 보낸 돈은 잃을 수 있습니다.",
+    "network.warn.switch": "Polygon으로 바꾸기",
+    "network.warn.amoy": "테스트 네트워크로 바꾸기",
+    "network.warn.more": "네트워크 설정 보기",
+    "network.current": "지갑이 이 네트워크에 있습니다",
 };
 
 const ja: Record<MessageKey, string> = {
@@ -493,6 +505,12 @@ const ja: Record<MessageKey, string> = {
     "network.verify.link": "CircleのUSDCアドレス一覧",
     "network.disclaimer":
         "ネットワークやトークンの追加では、ウォレットが許可を求めます。お金は動かず、署名もしません。信頼できるネットワークだけ追加してください。",
+    "network.warn.text":
+        "ウォレットがOPUSの使わないネットワークにあります(チェーンID {chainId})。Polygonに切り替えてください。試す場合はPolygon Amoyです。別のネットワークに送ったお金は失う恐れがあります。",
+    "network.warn.switch": "Polygonに切り替え",
+    "network.warn.amoy": "テストネットワークに切り替え",
+    "network.warn.more": "ネットワーク設定を見る",
+    "network.current": "ウォレットはこのネットワークにあります",
 };
 
 const zh: Record<MessageKey, string> = {
@@ -636,6 +654,12 @@ const zh: Record<MessageKey, string> = {
     "network.verify": "使用前请对照官方资料核实这些数值。USDC 的官方合约地址由 Circle 公布。",
     "network.verify.link": "Circle 的 USDC 地址列表",
     "network.disclaimer": "添加网络或代币时,钱包会请求你的许可。不会转移资金,也不会签名。请只添加可信的网络。",
+    "network.warn.text":
+        "你的钱包所在网络不是 OPUS 使用的网络(链 ID {chainId})。请切换到 Polygon;测试时用 Polygon Amoy。发送到其他网络的资金可能丢失。",
+    "network.warn.switch": "切换到 Polygon",
+    "network.warn.amoy": "切换到测试网",
+    "network.warn.more": "查看网络设置",
+    "network.current": "你的钱包在此网络",
 };
 
 export const MESSAGES: Record<Locale, Record<MessageKey, string>> = { en, ko, ja, zh };
