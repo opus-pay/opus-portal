@@ -33,7 +33,7 @@ export const NETWORKS: readonly Network[] = [
         rpcUrls: ["https://polygon-rpc.com"],
         explorer: "https://polygonscan.com",
         usdc: { name: "USD Coin", symbol: "USDC", decimals: 6, address: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359" },
-        lookalike: { symbol: "USDC.e", address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174" },
+        lookalike: { symbol: "USDC.e (USDC PoS)", address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174" },
         contracts: null,
         faucets: [],
     },
