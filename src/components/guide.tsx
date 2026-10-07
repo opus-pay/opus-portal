@@ -5,6 +5,19 @@ import { FlowDiagram } from "./flow";
 import { Frame } from "./frame";
 import { useLocale } from "./locale";
 
+/** Makes every "Polygon" in a text stand out, so the network is hard to miss. */
+function emphasize(text: string) {
+    return text.split(/(Polygon)/).map((part, i) =>
+        part === "Polygon" ? (
+            <strong key={i} className="font-bold text-ink">
+                {part}
+            </strong>
+        ) : (
+            part
+        )
+    );
+}
+
 function Steps({ flow }: { flow: Flow }) {
     const { t } = useLocale();
     return (
@@ -17,7 +30,7 @@ function Steps({ flow }: { flow: Flow }) {
                     >
                         {i + 1}
                     </span>
-                    <span>{t(key)}</span>
+                    <span>{emphasize(t(key))}</span>
                 </li>
             ))}
         </ol>
@@ -47,6 +60,23 @@ export function Guide() {
                     <p className="m-0 text-[16px] leading-relaxed text-ink-soft">{t("guide.intro")}</p>
                 </section>
 
+                <div
+                    role="note"
+                    className="flex items-start gap-3 rounded-2xl border-2 border-accent bg-accent-fill p-4 text-white sm:p-5"
+                >
+                    <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" className="mt-0.5 shrink-0">
+                        <path
+                            d="M12 3l10 18H2L12 3zm0 6v6m0 3v.5"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                    <p className="m-0 text-[16px] font-semibold leading-relaxed">{t("guide.polygon.banner")}</p>
+                </div>
+
                 <section aria-labelledby="need" className="flex flex-col gap-4">
                     <h2 id="need" className="m-0 font-display text-[22px] font-bold">
                         {t("guide.need.title")}
@@ -72,7 +102,7 @@ export function Guide() {
                         {t("guide.safety.title")}
                     </h2>
                     <ul className="m-0 flex list-disc flex-col gap-2 pl-5 text-[15px] leading-relaxed text-ink-soft">
-                        <li>{t("guide.safety.network")}</li>
+                        <li>{emphasize(t("guide.safety.network"))}</li>
                         <li>{t("guide.safety.token")}</li>
                         <li>{t("guide.safety.test")}</li>
                         <li>{t("guide.safety.final")}</li>

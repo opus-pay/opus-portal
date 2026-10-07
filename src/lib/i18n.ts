@@ -127,6 +127,8 @@ const en = {
         "Some exchanges accept deposits only from addresses you registered first, or ask about the sender. Follow the exchange's rules.",
     "guide.disclaimer":
         "This guide is general information, not financial or legal advice. Rules for exchanges and crypto assets differ by country.",
+    "guide.polygon.banner":
+        "Always choose the Polygon network. Every withdrawal and every deposit in this guide must be on Polygon. Any other network can lose your money for good.",
 } as const;
 
 export type MessageKey = keyof typeof en;
@@ -236,6 +238,8 @@ const ko: Record<MessageKey, string> = {
         "거래소에 따라 먼저 등록한 주소에서만 입금을 받거나 보내는 사람의 정보를 묻기도 합니다. 거래소의 규칙을 따르세요.",
     "guide.disclaimer":
         "이 안내는 일반 정보이며 금융·법률 자문이 아닙니다. 거래소와 가상자산 규칙은 나라마다 다릅니다.",
+    "guide.polygon.banner":
+        "네트워크는 반드시 Polygon을 선택하세요. 이 가이드의 모든 출금과 입금은 Polygon 네트워크여야 합니다. 다른 네트워크를 고르면 돈을 영영 잃을 수 있습니다.",
 };
 
 const ja: Record<MessageKey, string> = {
@@ -344,6 +348,8 @@ const ja: Record<MessageKey, string> = {
         "取引所によっては、先に登録したアドレスからの入金のみ受け付けたり、送金元の情報を求めたりします。取引所のルールに従ってください。",
     "guide.disclaimer":
         "このガイドは一般的な情報であり、金融・法律上の助言ではありません。取引所や暗号資産のルールは国によって異なります。",
+    "guide.polygon.banner":
+        "ネットワークは必ずPolygonを選んでください。このガイドのすべての出金と入金はPolygonネットワークで行います。他のネットワークを選ぶと、お金を失う恐れがあります。",
 };
 
 const zh: Record<MessageKey, string> = {
@@ -441,6 +447,8 @@ const zh: Record<MessageKey, string> = {
     "guide.out.s3": "测试金额到账后,再转其余部分。手续费用少量POL支付。",
     "guide.out.s4": "部分交易所只接受事先登记地址的充值,或要求提供转出方信息。请遵循交易所的规则。",
     "guide.disclaimer": "本指南仅为一般信息,不构成金融或法律建议。各国对交易所和加密资产的规定不同。",
+    "guide.polygon.banner":
+        "网络必须选择Polygon。本指南中的所有提现和充值都必须使用Polygon网络。选择其他网络可能导致资金永久丢失。",
 };
 
 export const MESSAGES: Record<Locale, Record<MessageKey, string>> = { en, ko, ja, zh };
