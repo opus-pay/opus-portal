@@ -5,7 +5,7 @@ import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { polygon, polygonAmoy } from "wagmi/chains";
 
 import { PHONE_WALLET } from "../lib/wagmi";
-import { chooseConnector, hasBrowserWallet, shortAddress, type WalletKind } from "../lib/wallets";
+import { chooseConnector, displayAddress, hasBrowserWallet, shortAddress, type WalletKind } from "../lib/wallets";
 import { useLocale } from "./locale";
 
 const buttonClass =
@@ -47,7 +47,9 @@ export function WalletButton() {
             <div className="flex items-center gap-2" aria-label={t("wallet.connected")}>
                 <span className="inline-flex h-10 items-center gap-2 rounded-lg border border-line bg-surface px-3 text-[14px] font-medium">
                     <span aria-hidden className="h-2 w-2 rounded-full bg-money" />
-                    <span className="font-mono">{shortAddress(address)}</span>
+                    <span className="font-mono" title={displayAddress(address)}>
+                        {shortAddress(address)}
+                    </span>
                     {network !== undefined && <span className="hidden text-muted sm:inline">{network}</span>}
                 </span>
                 <button

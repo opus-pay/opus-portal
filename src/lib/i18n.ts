@@ -5,7 +5,7 @@ export const LOCALE_NAMES: Record<Locale, string> = {
     en: "English",
     ko: "한국어",
     ja: "日本語",
-    zh: "中文",
+    zh: "简体中文",
 };
 
 export const isLocale = (value: unknown): value is Locale => (LOCALES as readonly unknown[]).includes(value);

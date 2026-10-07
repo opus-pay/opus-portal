@@ -1,3 +1,5 @@
+import { getAddress, isAddress } from "viem";
+
 /** Which way to reach a wallet: the browser's own (an extension, or a wallet app's browser) or a phone wallet over WalletConnect. */
 export type WalletKind = "browser" | "phone";
 
@@ -17,7 +19,17 @@ export function hasBrowserWallet(): boolean {
     return typeof window !== "undefined" && (window as unknown as { ethereum?: unknown }).ethereum !== undefined;
 }
 
-/** `0x1234…abcd` for showing an address in a small space. */
+/**
+ * An address as it is shown everywhere in OPUS (the Portal, WayHand and the wallet app): the EIP-55 checksum
+ * spelling, so the same address never looks different from one screen to the next. Text that is not an address
+ * is returned as it is.
+ */
+export function displayAddress(address: string): string {
+    return isAddress(address, { strict: false }) ? getAddress(address) : address;
+}
+
+/** `0x1234…abcd` for showing an address in a small space: the first 6 and last 4 characters of the checksum form. */
 export function shortAddress(address: string): string {
-    return address.length <= 12 ? address : `${address.slice(0, 6)}…${address.slice(-4)}`;
+    const full = displayAddress(address);
+    return full.length <= 12 ? full : `${full.slice(0, 6)}…${full.slice(-4)}`;
 }
