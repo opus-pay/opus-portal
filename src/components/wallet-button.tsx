@@ -50,7 +50,13 @@ export function WalletButton() {
                     <span className="font-mono" title={displayAddress(address)}>
                         {shortAddress(address)}
                     </span>
-                    {network !== undefined && <span className="hidden text-muted sm:inline">{network}</span>}
+                    <a
+                        href="/network/"
+                        title={t("nav.network")}
+                        className="hidden text-muted no-underline hover:text-ink hover:underline sm:inline"
+                    >
+                        {network ?? t("nav.network")}
+                    </a>
                 </span>
                 <button
                     type="button"
