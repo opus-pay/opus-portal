@@ -35,6 +35,14 @@ export function Portal() {
                     <span className="text-[14.5px] leading-relaxed text-ink-soft">{t("guide.home.desc")}</span>
                     <span className="text-[14px] font-semibold text-accent">{t("guide.home.go")} →</span>
                 </a>
+                <a
+                    href="/network/"
+                    className="mx-auto flex w-full max-w-[44rem] flex-col gap-1 rounded-2xl border-2 border-accent bg-accent-wash p-5 text-ink no-underline transition hover:-translate-y-0.5 hover:shadow-md"
+                >
+                    <span className="font-display text-[19px] font-bold">{t("network.home.title")}</span>
+                    <span className="text-[14.5px] leading-relaxed text-ink-soft">{t("network.home.desc")}</span>
+                    <span className="text-[14px] font-semibold text-accent">{t("network.home.go")} →</span>
+                </a>
             </main>
         </Frame>
     );
