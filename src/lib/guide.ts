@@ -4,7 +4,7 @@ import type { MessageKey } from "./i18n";
 export type Exchange = { id: "gate" | "upbit"; name: string; href: string; desc: MessageKey };
 
 export const EXCHANGES: readonly Exchange[] = [
-    { id: "gate", name: "Gate", href: "https://www.gate.com", desc: "guide.gate.desc" },
+    { id: "gate", name: "Gate.IO", href: "https://www.gate.com", desc: "guide.gate.desc" },
     { id: "upbit", name: "Upbit", href: "https://upbit.com", desc: "guide.upbit.desc" },
 ];
 
