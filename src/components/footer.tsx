@@ -11,6 +11,7 @@ export function Footer() {
         { href: links.whitepaper, label: t("footer.whitepaper") },
         { href: links.architecture, label: t("footer.architecture") },
         { href: links.github, label: t("footer.github") },
+        { href: "/guide/", label: t("nav.guide"), external: false },
     ];
     return (
         <footer className="border-t border-line">
@@ -20,8 +21,9 @@ export function Footer() {
                         <a
                             key={item.label}
                             href={item.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            {...("external" in item && item.external === false
+                                ? {}
+                                : { target: "_blank", rel: "noopener noreferrer" })}
                             className="text-[15px] font-semibold text-ink no-underline hover:text-accent hover:underline"
                         >
                             {item.label}
