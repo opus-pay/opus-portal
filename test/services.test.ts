@@ -35,13 +35,13 @@ describe("service list", () => {
         expect(SERVICES.filter((s) => s.status === "planned")).to.have.length(8);
     });
 
-    it("opens WayHand at wayhand.net unless the build says otherwise", () => {
-        expect(SERVICES[0].href).to.equal(process.env.NEXT_PUBLIC_WAYHAND_URL?.trim() || "https://wayhand.net");
+    it("opens WayHand at www.wayhand.app unless the build says otherwise", () => {
+        expect(SERVICES[0].href).to.equal(process.env.NEXT_PUBLIC_WAYHAND_URL?.trim() || "https://www.wayhand.app");
         expect(isOpen(SERVICES[0])).to.equal(true);
     });
 
     it("lets a visitor open only an active service with a web address", () => {
-        const wayhand: Service = { id: "wayhand", name: "WayHand", status: "active", href: "https://wayhand.net" };
+        const wayhand: Service = { id: "wayhand", name: "WayHand", status: "active", href: "https://www.wayhand.app" };
         expect(isOpen(wayhand)).to.equal(true);
         expect(isOpen({ ...wayhand, href: undefined })).to.equal(false);
         expect(isOpen({ ...wayhand, href: "" })).to.equal(false);

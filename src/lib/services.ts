@@ -10,7 +10,7 @@ export type ServiceId = "wayhand" | "class" | "asset" | "studio" | "tour" | "cod
 export type Service = { id: ServiceId; name: string; status: "active" | "planned"; href?: string };
 
 /** The address of WayHand. The build setting wins, so a test or staging site can point elsewhere. */
-const WAYHAND = process.env.NEXT_PUBLIC_WAYHAND_URL?.trim() || "https://wayhand.net";
+const WAYHAND = process.env.NEXT_PUBLIC_WAYHAND_URL?.trim() || "https://www.wayhand.app";
 
 export const SERVICES: readonly Service[] = [
     { id: "wayhand", name: "WayHand", status: "active", href: WAYHAND },

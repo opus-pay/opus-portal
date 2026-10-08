@@ -50,7 +50,7 @@ Node 22 이상이 필요합니다.
 | :------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` | [cloud.reown.com](https://cloud.reown.com)에서 무료로 받는 프로젝트 ID. 비우면 브라우저 지갑만 됩니다. 허용 주소 목록에 사이트 주소를 넣으세요. |
 | `NEXT_PUBLIC_SITE_URL`                 | 이 사이트의 주소 (지갑에 표시됨)                                                                                                                |
-| `NEXT_PUBLIC_WAYHAND_URL`              | WayHand의 주소. 비우면 `https://wayhand.net`입니다.                                                                                             |
+| `NEXT_PUBLIC_WAYHAND_URL`              | WayHand의 주소. 비우면 `https://www.wayhand.app`입니다.                                                                                             |
 | `NEXT_PUBLIC_GITHUB_URL`               | 아래쪽 GitHub 링크 (기본 `https://github.com/opus-pay`)                                                                                         |
 | `NEXT_PUBLIC_DOCS_URL`                 | 백서·아키텍처 문서가 있는 곳 (기본 `https://github.com/opus-pay/opus-osx/blob/main`)                                                            |
 
