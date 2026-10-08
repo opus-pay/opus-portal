@@ -13,6 +13,7 @@ export function Footer() {
         { href: links.github, label: t("footer.github") },
         { href: "/guide/", label: t("nav.guide"), external: false },
         { href: "/network/", label: t("nav.network"), external: false },
+        { href: "/testnet/", label: t("nav.testnet"), external: false },
     ];
     return (
         <footer className="border-t border-line">
