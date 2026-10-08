@@ -32,6 +32,18 @@ yarn build                    # out/
 
 Node 22 이상이 필요합니다.
 
+## 올리는 곳 (www.opusportal.org)
+
+서버 코드가 없는 정적 사이트(`out/`)라서 어느 호스팅이든 올릴 수 있습니다. 주소는 `https://www.opusportal.org`입니다. 아래는 Cloudflare Pages에 올리는 예입니다 (비공개 저장소도 무료로 됩니다).
+
+1.  Cloudflare Pages에서 이 저장소를 연결하고 빌드 명령은 `yarn build`, 출력 폴더는 `out`, Node 버전은 22로 정합니다.
+2.  빌드 환경 변수에 `NEXT_PUBLIC_SITE_URL=https://www.opusportal.org`, `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`를 넣습니다.
+3.  Pages 프로젝트의 사용자 지정 도메인에 `www.opusportal.org`를 추가합니다 (DNS를 Cloudflare가 관리하면 레코드가 자동으로 만들어집니다).
+4.  `opusportal.org`(www 없는 주소)는 `https://www.opusportal.org`로 넘어가게 리다이렉트 규칙(301)을 만듭니다. `opusescrow.org`를 등록했다면 같은 방식으로 넘깁니다.
+5.  [Reown](https://cloud.reown.com) 프로젝트의 허용 주소 목록에 `https://www.opusportal.org`를 추가합니다.
+
+주소를 바꾸면 OPUS 앱(`EXPO_PUBLIC_PORTAL_URL`), 공통 UI 키트(`DEFAULT_PORTAL_URL`), 웨이핸드(`NEXT_PUBLIC_PORTAL_URL`)의 기본값도 함께 바꿉니다.
+
 ## 설정 (`.env.local`, 빌드할 때 읽힘, 비밀이 아님)
 
 | 설정                                   | 뜻                                                                                                                                              |
