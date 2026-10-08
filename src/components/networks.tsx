@@ -213,6 +213,11 @@ export function Networks() {
         return (window as unknown as { ethereum?: Eip1193 }).ethereum;
     };
 
+    // Test networks only hold play money: they stay out of sight until someone asks for them.
+    const [showTest, setShowTest] = useState(false);
+    const real = NETWORKS.filter((network) => !network.testnet);
+    const test = NETWORKS.filter((network) => network.testnet);
+
     return (
         <Frame>
             <main className="mx-auto flex w-full max-w-[64rem] flex-1 flex-col gap-8 px-4 py-10 sm:px-6 sm:py-14">
@@ -232,7 +237,7 @@ export function Networks() {
                 </section>
 
                 <div className="flex flex-col gap-6">
-                    {NETWORKS.map((network) => (
+                    {real.map((network) => (
                         <NetworkCard
                             key={network.id}
                             network={network}
@@ -240,6 +245,29 @@ export function Networks() {
                             current={chainId === network.chainId}
                         />
                     ))}
+                    {test.length > 0 && (
+                        <button
+                            type="button"
+                            className={`${secondary} self-start`}
+                            aria-expanded={showTest}
+                            aria-controls="test-networks"
+                            onClick={() => setShowTest(!showTest)}
+                        >
+                            {t(showTest ? "network.testnet.hide" : "network.testnet.show")}
+                        </button>
+                    )}
+                    {showTest && (
+                        <div id="test-networks" className="flex flex-col gap-6">
+                            {test.map((network) => (
+                                <NetworkCard
+                                    key={network.id}
+                                    network={network}
+                                    provider={provider}
+                                    current={chainId === network.chainId}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 <section className="flex flex-col gap-1.5 text-[13.5px] leading-relaxed text-muted">
