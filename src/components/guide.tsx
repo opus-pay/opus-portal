@@ -1,6 +1,7 @@
 "use client";
 
 import { EXCHANGES, FLOWS, type Flow } from "../lib/guide";
+import { Concepts } from "./concepts";
 import { FlowDiagram } from "./flow";
 import { Frame } from "./frame";
 import { useLocale } from "./locale";
@@ -59,6 +60,8 @@ export function Guide() {
                     </h1>
                     <p className="m-0 text-[16px] leading-relaxed text-ink-soft">{t("guide.intro")}</p>
                 </section>
+
+                <Concepts />
 
                 <div
                     role="note"

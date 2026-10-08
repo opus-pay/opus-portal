@@ -203,7 +203,8 @@ function NetworkCard({
 }
 
 /** Network settings and the USDC token for a wallet, with buttons to add them, switch, and add the token. */
-export function Networks() {
+/** `test` shows the test networks (play money) on a page of their own; the main page shows the real ones. */
+export function Networks({ test: testPage = false }: { test?: boolean }) {
     const { t } = useLocale();
     const { connector, chainId } = useAccount();
 
@@ -213,26 +214,37 @@ export function Networks() {
         return (window as unknown as { ethereum?: Eip1193 }).ethereum;
     };
 
+    const shown = NETWORKS.filter((network) => network.testnet === testPage);
+
     return (
         <Frame>
             <main className="mx-auto flex w-full max-w-[64rem] flex-1 flex-col gap-8 px-4 py-10 sm:px-6 sm:py-14">
                 <section className="flex max-w-[46rem] flex-col gap-3">
                     <h1 className="m-0 font-display text-[28px] font-bold leading-tight tracking-tight text-balance sm:text-[36px]">
-                        {t("network.title")}
+                        {t(testPage ? "testnet.title" : "network.title")}
                     </h1>
-                    <p className="m-0 text-[16px] leading-relaxed text-ink-soft">{t("network.intro")}</p>
+                    <p className="m-0 text-[16px] leading-relaxed text-ink-soft">
+                        {t(testPage ? "testnet.intro" : "network.intro")}
+                    </p>
                 </section>
 
                 <section className="flex flex-col gap-2 rounded-2xl border-2 border-accent bg-accent-wash p-5">
                     <h2 className="m-0 font-display text-[18px] font-bold">{t("network.pol.title")}</h2>
                     <p className="m-0 text-[15px] leading-relaxed text-ink-soft">{t("network.pol.body")}</p>
-                    <a href="/guide/" className="text-[14.5px] font-semibold">
-                        {t("network.pol.guide")} →
-                    </a>
+                    <span className="flex flex-wrap gap-x-5 gap-y-1">
+                        <a href="/guide/" className="text-[14.5px] font-semibold">
+                            {t("network.pol.guide")} →
+                        </a>
+                        {!testPage && (
+                            <a href="/testnet/" className="text-[14.5px] font-semibold">
+                                {t("network.testnet.link")} →
+                            </a>
+                        )}
+                    </span>
                 </section>
 
                 <div className="flex flex-col gap-6">
-                    {NETWORKS.map((network) => (
+                    {shown.map((network) => (
                         <NetworkCard
                             key={network.id}
                             network={network}
