@@ -30,9 +30,9 @@ describe("service list", () => {
         for (const service of SERVICES) expect(service.name.trim(), service.id).to.not.equal("");
     });
 
-    it("keeps WayHand the only active service, and the other eight planned", () => {
+    it("keeps WayHand the only active service, and the other two planned", () => {
         expect(SERVICES.filter((s) => s.status === "active").map((s) => s.id)).to.deep.equal(["wayhand"]);
-        expect(SERVICES.filter((s) => s.status === "planned")).to.have.length(8);
+        expect(SERVICES.filter((s) => s.status === "planned")).to.have.length(2);
     });
 
     it("opens WayHand at www.wayhand.app unless the build says otherwise", () => {
