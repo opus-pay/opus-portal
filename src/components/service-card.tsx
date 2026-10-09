@@ -1,6 +1,6 @@
 "use client";
 
-import { descKey, isOpen, type Service } from "../lib/services";
+import { descKey, isOpen, serviceAddress, type Service } from "../lib/services";
 import { useLocale } from "./locale";
 
 const BASE = "flex h-full flex-col gap-3 rounded-2xl border p-5";
@@ -10,7 +10,7 @@ const BASE = "flex h-full flex-col gap-3 rounded-2xl border p-5";
  * and says so to a screen reader, so nobody is led to a page that is not there.
  */
 export function ServiceCard({ service }: { service: Service }) {
-    const { t } = useLocale();
+    const { t, locale } = useLocale();
     const name = service.name;
     const open = isOpen(service);
     const body = (
@@ -31,7 +31,7 @@ export function ServiceCard({ service }: { service: Service }) {
     if (open) {
         return (
             <a
-                href={service.href}
+                href={serviceAddress(service, locale)}
                 aria-label={t("card.go", { name })}
                 className={`${BASE} border-line bg-surface text-ink no-underline transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md`}
             >
