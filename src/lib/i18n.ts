@@ -10,14 +10,10 @@ export const LOCALE_NAMES: Record<Locale, string> = {
 
 export const isLocale = (value: unknown): value is Locale => (LOCALES as readonly unknown[]).includes(value);
 
-/** The first language in the browser's list that the site has, else English. */
-export function pickLocale(languages: readonly string[]): Locale {
-    for (const tag of languages) {
-        const base = tag.toLowerCase().split("-")[0];
-        if (isLocale(base)) return base;
-    }
-    return "en";
-}
+export const DEFAULT_LOCALE: Locale = "en";
+
+/** The language to start in: the one the reader chose last time, else English (not the browser's language). */
+export const initialLocale = (saved: string | null | undefined): Locale => (isLocale(saved) ? saved : DEFAULT_LOCALE);
 
 const en = {
     "brand.tagline": "Services built on OPUS escrow",
