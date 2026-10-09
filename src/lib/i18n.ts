@@ -12,8 +12,66 @@ export const isLocale = (value: unknown): value is Locale => (LOCALES as readonl
 
 export const DEFAULT_LOCALE: Locale = "en";
 
-/** The language to start in: the one the reader chose last time, else English (not the browser's language). */
-export const initialLocale = (saved: string | null | undefined): Locale => (isLocale(saved) ? saved : DEFAULT_LOCALE);
+/** The first language in the browser's list that the site has (`zh-TW` and `zh-CN` both give Chinese), else English. */
+export function pickLocale(languages: readonly string[]): Locale {
+    for (const tag of languages) {
+        const base = tag.toLowerCase().split("-")[0];
+        if (isLocale(base)) return base;
+    }
+    return DEFAULT_LOCALE;
+}
+
+/**
+ * The language to start in, in this order: `?lang=` in the address, the one the reader chose last time (a cookie),
+ * the browser's own language if the site has it, English. The same rule as the mini-app standard.
+ */
+export function initialLocale(
+    fromUrl: string | null | undefined,
+    saved: string | null | undefined,
+    browser: readonly string[] = []
+): Locale {
+    if (isLocale(fromUrl)) return fromUrl;
+    if (isLocale(saved)) return saved;
+    return pickLocale(browser);
+}
+
+/**
+ * The address with `lang` set to the language just chosen, or `null` when the address has no `lang` (nothing to
+ * change). A choice made with the language control must also win over an old `?lang=` in the address, or a reload
+ * would go back to it.
+ */
+export function addressWithLanguage(href: string, locale: Locale): string | null {
+    try {
+        const url = new URL(href);
+        if (!url.searchParams.has("lang")) return null;
+        url.searchParams.set("lang", locale);
+        return url.toString();
+    } catch {
+        return null;
+    }
+}
+
+/** The value of a cookie in a `document.cookie` string, or `null`. */
+export function readCookie(cookies: string, name: string): string | null {
+    for (const part of cookies.split(";")) {
+        const at = part.indexOf("=");
+        if (at > 0 && part.slice(0, at).trim() === name) {
+            try {
+                return decodeURIComponent(part.slice(at + 1).trim());
+            } catch {
+                return null;
+            }
+        }
+    }
+    return null;
+}
+
+/** The cookie text that remembers the choice for a year on every page: a preference of this browser, `Secure` on https. */
+export function choiceCookie(name: string, value: string, secure: boolean): string {
+    return `${name}=${encodeURIComponent(value)}; Path=/; Max-Age=${365 * 24 * 60 * 60}; SameSite=Lax${
+        secure ? "; Secure" : ""
+    }`;
+}
 
 const en = {
     "brand.tagline": "Services built on OPUS escrow",
@@ -27,7 +85,7 @@ const en = {
     "card.go": "Go to {name}",
     "card.planned": "{name}: not open yet",
     "service.wayhand.desc":
-        "Errands abroad, paid through escrow. Ask someone in Japan or Korea to check a place or send documents, and pay when the work is done. Buying on your behalf is coming.",
+        "Errands abroad, paid through escrow. Ask someone in Japan or Korea to check a place or send documents, and pay when the work is done. Buying on your behalf is open by invitation.",
     "service.tour.desc": "A local concierge for tailored itineraries and on-site bookings.",
     "service.code.desc": "Micro-bounties for local LLM setup and infrastructure troubleshooting.",
     "footer.architecture": "Architecture",
@@ -203,14 +261,14 @@ const ko: Record<MessageKey, string> = {
     "nav.language": "언어",
     "hero.title": "OPUS 위에서 만든 서비스",
     "hero.intro":
-        "OPUS는 열린 에스크로입니다. 돈은 컨트랙트에 잠기고 그 규칙에 따라서만 움직입니다. 아래 서비스는 저마다의 방식으로 OPUS를 씁니다. 포털은 서비스를 나열할 뿐 사람을 연결하지 않고 돈도 맡지 않습니다.",
+        "OPUS는 공개된 에스크로입니다. 돈은 컨트랙트에 잠기고 그 규칙에 따라서만 움직입니다. 아래 서비스는 저마다의 방식으로 OPUS를 씁니다. 포털은 서비스를 나열할 뿐 사람을 연결하지 않고 돈도 맡지 않습니다.",
     "services.title": "서비스",
     "status.live": "이용 가능",
     "status.planned": "준비 중",
     "card.go": "{name}으로 이동",
-    "card.planned": "{name}: 아직 열리지 않았습니다",
+    "card.planned": "{name}: 아직 공개되지 않았습니다",
     "service.wayhand.desc":
-        "해외 심부름을 에스크로로 안전하게. 일본·한국에 있는 누군가에게 현지 확인이나 서류 발송을 맡기고, 일이 끝나면 대금을 지급합니다. 구매대행은 준비 중입니다.",
+        "해외 심부름을 에스크로로 안전하게. 일본·한국에 있는 누군가에게 현지 확인이나 서류 발송을 맡기고, 일이 끝나면 대금을 지급합니다. 구매대행은 초대받은 분께 공개되었습니다.",
     "service.tour.desc": "로컬 맞춤 동선 기획 및 현지 예약 대행 컨시어지.",
     "service.code.desc": "로컬 LLM 설정 및 인프라 트러블슈팅 마이크로 바운티.",
     "footer.architecture": "아키텍처",
@@ -386,7 +444,7 @@ const ja: Record<MessageKey, string> = {
     "card.go": "{name}へ移動",
     "card.planned": "{name}：まだ開いていません",
     "service.wayhand.desc":
-        "海外のお使いをエスクローで安全に。日本・韓国にいる誰かに現地確認や書類の発送を頼み、作業が終わったら支払います。購入代行は準備中です。",
+        "海外のお使いをエスクローで安全に。日本・韓国にいる誰かに現地確認や書類の発送を頼み、作業が終わったら支払います。購入代行は招待制で公開されています。",
     "service.tour.desc": "現地に合わせた行程づくりと、現地予約代行のコンシェルジュ。",
     "service.code.desc": "ローカルLLMの設定とインフラのトラブル対応のマイクロバウンティ。",
     "footer.architecture": "アーキテクチャ",
@@ -565,7 +623,7 @@ const zh: Record<MessageKey, string> = {
     "card.go": "前往 {name}",
     "card.planned": "{name}：尚未开放",
     "service.wayhand.desc":
-        "用托管安全地办海外跑腿。请日本或韩国的人帮忙实地查看或寄送文件，事成之后再付款。代购筹备中。",
+        "用托管安全地办海外跑腿。请日本或韩国的人帮忙实地查看或寄送文件，事成之后再付款。代购现仅对受邀者开放。",
     "service.tour.desc": "提供本地定制行程规划与当地预订代办的礼宾服务。",
     "service.code.desc": "本地 LLM 配置与基础设施排障的小额悬赏。",
     "footer.architecture": "架构",
