@@ -32,8 +32,6 @@ export function ServiceCard({ service }: { service: Service }) {
         return (
             <a
                 href={service.href}
-                target="_blank"
-                rel="noopener noreferrer"
                 aria-label={t("card.go", { name })}
                 className={`${BASE} border-line bg-surface text-ink no-underline transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md`}
             >

@@ -131,7 +131,7 @@ function NetworkCard({
                     ))}
                 </Row>
                 <Row label={t("network.field.explorer")}>
-                    <a href={network.explorer} target="_blank" rel="noopener noreferrer" className="break-all">
+                    <a href={network.explorer} className="break-all">
                         {network.explorer}
                     </a>
                 </Row>
@@ -139,11 +139,9 @@ function NetworkCard({
                     <Copyable value={network.usdc.address} label={t("network.field.usdc")} />
                     <a
                         href={explorerAddress(network, network.usdc.address)}
-                        target="_blank"
-                        rel="noopener noreferrer"
                         className="mt-1 inline-block text-[13.5px]"
                     >
-                        {t("network.field.explorer")} ↗
+                        {t("network.field.explorer")} →
                     </a>
                     <span className="mt-1 block text-[13.5px] text-muted">
                         {network.usdc.symbol} · {network.usdc.decimals} {t("network.field.decimals")}
@@ -165,9 +163,7 @@ function NetworkCard({
                     <ul className="m-0 flex list-disc flex-col gap-1 pl-5 text-[14.5px]">
                         {network.faucets.map((f) => (
                             <li key={f.href}>
-                                <a href={f.href} target="_blank" rel="noopener noreferrer">
-                                    {t(f.label)} ↗
-                                </a>
+                                <a href={f.href}>{t(f.label)} →</a>
                             </li>
                         ))}
                     </ul>
@@ -256,10 +252,7 @@ export function Networks({ test: testPage = false }: { test?: boolean }) {
 
                 <section className="flex flex-col gap-1.5 text-[13.5px] leading-relaxed text-muted">
                     <p className="m-0">
-                        {t("network.verify")}{" "}
-                        <a href={USDC_SOURCE} target="_blank" rel="noopener noreferrer">
-                            {t("network.verify.link")} ↗
-                        </a>
+                        {t("network.verify")} <a href={USDC_SOURCE}>{t("network.verify.link")} →</a>
                     </p>
                     <p className="m-0">{t("network.disclaimer")}</p>
                 </section>

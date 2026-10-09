@@ -8,11 +8,11 @@ export function Footer() {
     const { t } = useLocale();
     const links = footerLinks();
     const items = [
-        { href: "/architecture/", label: t("footer.architecture"), external: false },
+        { href: "/architecture/", label: t("footer.architecture") },
         { href: links.github, label: t("footer.github") },
-        { href: "/guide/", label: t("nav.guide"), external: false },
-        { href: "/network/", label: t("nav.network"), external: false },
-        { href: "/testnet/", label: t("nav.testnet"), external: false },
+        { href: "/guide/", label: t("nav.guide") },
+        { href: "/network/", label: t("nav.network") },
+        { href: "/testnet/", label: t("nav.testnet") },
     ];
     return (
         <footer className="border-t border-line">
@@ -22,9 +22,6 @@ export function Footer() {
                         <a
                             key={item.label}
                             href={item.href}
-                            {...("external" in item && item.external === false
-                                ? {}
-                                : { target: "_blank", rel: "noopener noreferrer" })}
                             className="text-[15px] font-semibold text-ink no-underline hover:text-accent hover:underline"
                         >
                             {item.label}
