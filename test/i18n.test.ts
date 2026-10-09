@@ -1,6 +1,14 @@
 import { expect } from "chai";
 
-import { LOCALES, MESSAGES, choiceCookie, initialLocale, readCookie, translate } from "../src/lib/i18n";
+import {
+    LOCALES,
+    MESSAGES,
+    addressWithLanguage,
+    choiceCookie,
+    initialLocale,
+    readCookie,
+    translate,
+} from "../src/lib/i18n";
 
 const slots = (text: string) => (text.match(/\{\w+\}/g) ?? []).sort().join(",");
 
@@ -49,5 +57,16 @@ describe("translations", () => {
         expect(readCookie("a=1", "opus_locale")).to.equal(null);
         expect(readCookie("opus_locale=%E0%A4%A", "opus_locale")).to.equal(null);
         expect(readCookie("xopus_locale=ja", "opus_locale")).to.equal(null);
+    });
+
+    it("puts a language chosen with the control into the address, only when the address has one", () => {
+        expect(addressWithLanguage("https://www.opusportal.org/?lang=ko", "en")).to.equal(
+            "https://www.opusportal.org/?lang=en"
+        );
+        expect(addressWithLanguage("https://x.app/post?a=1&lang=ja#top", "zh")).to.equal(
+            "https://x.app/post?a=1&lang=zh#top"
+        );
+        expect(addressWithLanguage("https://www.opusportal.org/", "en")).to.equal(null);
+        expect(addressWithLanguage("not an address", "en")).to.equal(null);
     });
 });

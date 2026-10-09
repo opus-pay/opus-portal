@@ -5,6 +5,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import {
     LOCALE_NAMES,
     LOCALES,
+    addressWithLanguage,
     choiceCookie,
     initialLocale,
     isLocale,
@@ -34,6 +35,15 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
             // Cookies may be refused; the choice still holds for this visit.
         }
     }, []);
+    /** A choice made here also changes `?lang=` in the address when it has one, so a reload does not undo it. */
+    const followInAddress = useCallback((value: Locale) => {
+        try {
+            const next = addressWithLanguage(window.location.href, value);
+            if (next !== null) window.history.replaceState(window.history.state, "", next);
+        } catch {
+            // The address stays as it is.
+        }
+    }, []);
     useEffect(() => {
         let fromUrl: string | null = null;
         let saved: string | null = null;
@@ -55,8 +65,9 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
         (next: Locale) => {
             setState(next);
             remember(next);
+            followInAddress(next);
         },
-        [remember]
+        [remember, followInAddress]
     );
     const value = useMemo(() => ({ locale, setLocale }), [locale, setLocale]);
     return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
