@@ -6,7 +6,7 @@ import type { MessageKey } from "./i18n";
  * service is one entry here plus its description in `i18n.ts` (four languages). Names are brands and are not
  * translated. This is a directory: it names services, it never ranks them by who pays.
  */
-export type ServiceId = "wayhand" | "class" | "asset" | "studio" | "tour" | "code" | "dub" | "biz" | "rights";
+export type ServiceId = "wayhand" | "tour" | "code";
 export type Service = { id: ServiceId; name: string; status: "active" | "planned"; href?: string };
 
 /** The address of WayHand. The build setting wins, so a test or staging site can point elsewhere. */
@@ -14,14 +14,8 @@ const WAYHAND = process.env.NEXT_PUBLIC_WAYHAND_URL?.trim() || "https://www.wayh
 
 export const SERVICES: readonly Service[] = [
     { id: "wayhand", name: "WayHand", status: "active", href: WAYHAND },
-    { id: "class", name: "OPUS Class", status: "planned" },
-    { id: "asset", name: "OPUS Asset", status: "planned" },
-    { id: "studio", name: "OPUS Studio", status: "planned" },
     { id: "tour", name: "OPUS Tour", status: "planned" },
     { id: "code", name: "OPUS Code", status: "planned" },
-    { id: "dub", name: "OPUS Dub", status: "planned" },
-    { id: "biz", name: "OPUS Biz", status: "planned" },
-    { id: "rights", name: "OPUS Rights", status: "planned" },
 ];
 
 export const isWebAddress = (value: string | undefined): value is string => {
