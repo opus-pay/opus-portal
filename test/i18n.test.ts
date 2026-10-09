@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { LOCALES, MESSAGES, pickLocale, translate } from "../src/lib/i18n";
+import { LOCALES, MESSAGES, initialLocale, translate } from "../src/lib/i18n";
 
 const slots = (text: string) => (text.match(/\{\w+\}/g) ?? []).sort().join(",");
 
@@ -27,10 +27,13 @@ describe("translations", () => {
         expect(translate("ko", "card.go")).to.contain("{name}");
     });
 
-    it("picks the first language the site has, else English", () => {
-        expect(pickLocale(["fr-FR", "ja-JP", "en"])).to.equal("ja");
-        expect(pickLocale(["zh-Hans-CN"])).to.equal("zh");
-        expect(pickLocale(["de", "fr"])).to.equal("en");
-        expect(pickLocale([])).to.equal("en");
+    it("starts in English, or in the language the reader chose last time", () => {
+        expect(initialLocale(null)).to.equal("en");
+        expect(initialLocale(undefined)).to.equal("en");
+        expect(initialLocale("ko")).to.equal("ko");
+        expect(initialLocale("zh")).to.equal("zh");
+        // A value that is not a language of the site (an old or edited entry) falls back to English.
+        expect(initialLocale("fr")).to.equal("en");
+        expect(initialLocale("")).to.equal("en");
     });
 });

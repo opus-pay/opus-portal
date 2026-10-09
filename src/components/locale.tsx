@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
-import { LOCALE_NAMES, LOCALES, isLocale, pickLocale, translate, type Locale, type MessageKey } from "../lib/i18n";
+import { LOCALE_NAMES, LOCALES, initialLocale, isLocale, translate, type Locale, type MessageKey } from "../lib/i18n";
 
 const STORAGE_KEY = "opus.portal.locale";
 
@@ -11,7 +11,7 @@ const LocaleContext = createContext<{ locale: Locale; setLocale: (locale: Locale
     setLocale: () => undefined,
 });
 
-/** Starts from a saved choice, else the browser language, and keeps `<html lang>` in step. */
+/** Starts from the language chosen last time, else English, and keeps `<html lang>` in step. */
 export function LocaleProvider({ children }: { children: ReactNode }) {
     const [locale, setState] = useState<Locale>("en");
     useEffect(() => {
@@ -21,7 +21,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
         } catch {
             saved = null;
         }
-        setState(isLocale(saved) ? saved : pickLocale(navigator.languages ?? [navigator.language]));
+        setState(initialLocale(saved));
     }, []);
     useEffect(() => {
         document.documentElement.lang = locale === "zh" ? "zh-Hans" : locale;

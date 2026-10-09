@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
 import { LOCALES, MESSAGES } from "../src/lib/i18n";
-import { descKey, isOpen, isWebAddress, SERVICES, type Service } from "../src/lib/services";
+import { descKey, isOpen, isWebAddress, SERVICES, serviceAddress, type Service } from "../src/lib/services";
 
 describe("service list", () => {
     it("describes every service in every language", () => {
@@ -61,5 +61,20 @@ describe("service list", () => {
         expect(isWebAddress("ftp://a.example")).to.equal(false);
         expect(isWebAddress("not a url")).to.equal(false);
         expect(isWebAddress(undefined)).to.equal(false);
+    });
+
+    it("opens a service in the reader's language, keeping what is already in its address", () => {
+        const base = { id: "wayhand", name: "WayHand", status: "active" } as const;
+        expect(serviceAddress({ ...base, href: "https://www.wayhand.app" }, "ko")).to.equal(
+            "https://www.wayhand.app/?lang=ko"
+        );
+        expect(serviceAddress({ ...base, href: "https://x.example/app?ref=1" }, "ja")).to.equal(
+            "https://x.example/app?ref=1&lang=ja"
+        );
+        expect(serviceAddress({ ...base, href: "https://x.example/?lang=en" }, "zh")).to.equal(
+            "https://x.example/?lang=zh"
+        );
+        expect(serviceAddress({ ...base, status: "planned" }, "ko")).to.equal(undefined);
+        expect(serviceAddress({ ...base, href: "javascript:alert(1)" }, "ko")).to.equal("javascript:alert(1)");
     });
 });

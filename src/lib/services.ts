@@ -38,3 +38,15 @@ export const isWebAddress = (value: string | undefined): value is string => {
 export const isOpen = (service: Service): boolean => service.status === "active" && isWebAddress(service.href);
 
 export const descKey = (id: ServiceId) => `service.${id}.desc` as MessageKey;
+
+/**
+ * The address to open a service at: its own address plus `?lang=` with the language the reader chose here, so the
+ * service starts in it (the shared rule of the mini-app standard: address, then last choice, then English).
+ * Anything already in the address is kept; an address that is not a web address is returned as it is.
+ */
+export function serviceAddress(service: Service, language: string): string | undefined {
+    if (!isWebAddress(service.href)) return service.href;
+    const url = new URL(service.href);
+    url.searchParams.set("lang", language);
+    return url.toString();
+}
