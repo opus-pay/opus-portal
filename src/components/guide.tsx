@@ -116,14 +116,12 @@ export function Guide() {
                                 <a
                                     key={ex.id}
                                     href={ex.href}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
                                     className="flex flex-col gap-2 rounded-2xl border border-line bg-canvas p-5 text-ink no-underline transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md"
                                 >
                                     <span className="font-display text-[19px] font-bold">{ex.name}</span>
                                     <span className="text-[14.5px] leading-relaxed text-ink-soft">{t(ex.desc)}</span>
                                     <span className="text-[14px] font-semibold text-accent">
-                                        {t("guide.exchange.open", { name: ex.name })} ↗
+                                        {t("guide.exchange.open", { name: ex.name })} →
                                     </span>
                                 </a>
                             ))}
