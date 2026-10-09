@@ -3,13 +3,12 @@
 import { footerLinks } from "../lib/links";
 import { useLocale } from "./locale";
 
-/** The whitepaper, the architecture and the source, at the foot of the page. */
+/** The architecture, the source and the other pages, at the foot of the page. */
 export function Footer() {
-    const { locale, t } = useLocale();
-    const links = footerLinks(locale);
+    const { t } = useLocale();
+    const links = footerLinks();
     const items = [
-        { href: links.whitepaper, label: t("footer.whitepaper") },
-        { href: links.architecture, label: t("footer.architecture") },
+        { href: "/architecture/", label: t("footer.architecture"), external: false },
         { href: links.github, label: t("footer.github") },
         { href: "/guide/", label: t("nav.guide"), external: false },
         { href: "/network/", label: t("nav.network"), external: false },

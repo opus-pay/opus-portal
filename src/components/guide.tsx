@@ -1,6 +1,7 @@
 "use client";
 
 import { EXCHANGES, FLOWS, type Flow } from "../lib/guide";
+import { Accordion } from "./accordion";
 import { Concepts } from "./concepts";
 import { FlowDiagram } from "./flow";
 import { Frame } from "./frame";
@@ -38,13 +39,12 @@ function Steps({ flow }: { flow: Flow }) {
     );
 }
 
-function Section({ flow, title }: { flow: Flow; title?: string }) {
+function Section({ flow }: { flow: Flow }) {
     return (
-        <section className="flex flex-col gap-4 rounded-2xl border border-line bg-canvas p-4 sm:p-6">
-            {title !== undefined && <h3 className="m-0 font-display text-[19px] font-bold">{title}</h3>}
+        <div className="flex flex-col gap-4">
             <FlowDiagram flow={flow} />
             <Steps flow={flow} />
-        </section>
+        </div>
     );
 }
 
@@ -60,8 +60,6 @@ export function Guide() {
                     </h1>
                     <p className="m-0 text-[16px] leading-relaxed text-ink-soft">{t("guide.intro")}</p>
                 </section>
-
-                <Concepts />
 
                 <div
                     role="note"
@@ -97,59 +95,54 @@ export function Guide() {
                     <p className="m-0 text-[14.5px] leading-relaxed text-muted">{t("guide.need.gasless")}</p>
                 </section>
 
-                <section
-                    aria-labelledby="safety"
-                    className="flex flex-col gap-3 rounded-2xl border border-line bg-surface p-5"
-                >
-                    <h2 id="safety" className="m-0 font-display text-[20px] font-bold">
-                        {t("guide.safety.title")}
-                    </h2>
-                    <ul className="m-0 flex list-disc flex-col gap-2 pl-5 text-[15px] leading-relaxed text-ink-soft">
-                        <li>{emphasize(t("guide.safety.network"))}</li>
-                        <li>{t("guide.safety.token")}</li>
-                        <li>{t("guide.safety.test")}</li>
-                        <li>{t("guide.safety.final")}</li>
-                    </ul>
-                </section>
+                {/* Only the titles show at first; the rest opens when its title is pressed. */}
+                <div className="flex flex-col gap-3">
+                    <Accordion id="concepts" title={t("concept.title")}>
+                        <Concepts untitled />
+                    </Accordion>
 
-                <section aria-labelledby="exchanges" className="flex flex-col gap-4">
-                    <h2 id="exchanges" className="m-0 font-display text-[22px] font-bold">
-                        {t("guide.exchanges.title")}
-                    </h2>
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        {EXCHANGES.map((ex) => (
-                            <a
-                                key={ex.id}
-                                href={ex.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex flex-col gap-2 rounded-2xl border border-line bg-surface p-5 text-ink no-underline transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md"
-                            >
-                                <span className="font-display text-[19px] font-bold">{ex.name}</span>
-                                <span className="text-[14.5px] leading-relaxed text-ink-soft">{t(ex.desc)}</span>
-                                <span className="text-[14px] font-semibold text-accent">
-                                    {t("guide.exchange.open", { name: ex.name })} ↗
-                                </span>
-                            </a>
-                        ))}
-                    </div>
-                    <p className="m-0 text-[13.5px] leading-relaxed text-muted">{t("guide.exchanges.note")}</p>
-                </section>
+                    <Accordion id="safety" title={t("guide.safety.title")}>
+                        <ul className="m-0 flex list-disc flex-col gap-2 pl-5 text-[15px] leading-relaxed text-ink-soft">
+                            <li>{emphasize(t("guide.safety.network"))}</li>
+                            <li>{t("guide.safety.token")}</li>
+                            <li>{t("guide.safety.test")}</li>
+                            <li>{t("guide.safety.final")}</li>
+                        </ul>
+                    </Accordion>
 
-                <section aria-labelledby="in" className="flex flex-col gap-4">
-                    <h2 id="in" className="m-0 font-display text-[22px] font-bold">
-                        {t("guide.in.title")}
-                    </h2>
-                    <Section flow={FLOWS.gate} title={t("guide.in.gate")} />
-                    <Section flow={FLOWS.upbit} title={t("guide.in.upbit")} />
-                </section>
+                    <Accordion id="exchanges" title={t("guide.exchanges.title")}>
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            {EXCHANGES.map((ex) => (
+                                <a
+                                    key={ex.id}
+                                    href={ex.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex flex-col gap-2 rounded-2xl border border-line bg-canvas p-5 text-ink no-underline transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md"
+                                >
+                                    <span className="font-display text-[19px] font-bold">{ex.name}</span>
+                                    <span className="text-[14.5px] leading-relaxed text-ink-soft">{t(ex.desc)}</span>
+                                    <span className="text-[14px] font-semibold text-accent">
+                                        {t("guide.exchange.open", { name: ex.name })} ↗
+                                    </span>
+                                </a>
+                            ))}
+                        </div>
+                        <p className="m-0 text-[13.5px] leading-relaxed text-muted">{t("guide.exchanges.note")}</p>
+                    </Accordion>
 
-                <section aria-labelledby="out" className="flex flex-col gap-4">
-                    <h2 id="out" className="m-0 font-display text-[22px] font-bold">
-                        {t("guide.out.title")}
-                    </h2>
-                    <Section flow={FLOWS.out} />
-                </section>
+                    <Accordion id="in-gate" title={`${t("guide.in.title")} · ${t("guide.in.gate")}`}>
+                        <Section flow={FLOWS.gate} />
+                    </Accordion>
+
+                    <Accordion id="in-upbit" title={`${t("guide.in.title")} · ${t("guide.in.upbit")}`}>
+                        <Section flow={FLOWS.upbit} />
+                    </Accordion>
+
+                    <Accordion id="out" title={t("guide.out.title")}>
+                        <Section flow={FLOWS.out} />
+                    </Accordion>
+                </div>
 
                 <p className="m-0 text-[13.5px] leading-relaxed text-muted">{t("guide.disclaimer")}</p>
             </main>

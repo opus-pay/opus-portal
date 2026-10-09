@@ -5,7 +5,7 @@ import { Frame } from "./frame";
 import { useLocale } from "./locale";
 import { ServiceCard } from "./service-card";
 
-/** The whole page: the wallet at the top, the services in the middle, the whitepaper, architecture and GitHub below. */
+/** The whole page: the wallet at the top, the services in the middle, the architecture and GitHub below. */
 export function Portal() {
     const { t } = useLocale();
     return (
