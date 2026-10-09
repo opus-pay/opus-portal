@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { useAccount } from "wagmi";
+import { useEffect, useState } from "react";
 
 import type { MessageKey } from "../lib/i18n";
 import { explorerAddress, NETWORKS, USDC_SOURCE, type Network } from "../lib/networks";
@@ -20,6 +19,16 @@ const secondary =
     "inline-flex h-10 items-center justify-center rounded-lg border border-line bg-surface px-3 text-[14px] font-semibold text-ink hover:border-ink-soft disabled:opacity-60";
 const primary =
     "inline-flex h-10 items-center justify-center rounded-lg bg-accent-fill px-3 text-[14px] font-bold text-white hover:bg-accent-deep disabled:opacity-60";
+
+type BrowserWallet = Eip1193 & {
+    on?: (event: string, handler: (value: unknown) => void) => void;
+    removeListener?: (event: string, handler: (value: unknown) => void) => void;
+};
+
+/** The wallet of this browser (`window.ethereum`), or `undefined` on a phone browser or a computer without one. */
+function browserWallet(): BrowserWallet | undefined {
+    return typeof window === "undefined" ? undefined : (window as unknown as { ethereum?: BrowserWallet }).ethereum;
+}
 
 /** A value with a copy button. Clipboard access can be refused (a private window), so it fails quietly. */
 function Copyable({ value, label }: { value: string; label: string }) {
@@ -202,13 +211,18 @@ function NetworkCard({
 /** `test` shows the test networks (play money) on a page of their own; the main page shows the real ones. */
 export function Networks({ test: testPage = false }: { test?: boolean }) {
     const { t } = useLocale();
-    const { connector, chainId } = useAccount();
-
-    /** The connected wallet's provider; else the browser's own wallet; else nothing. */
-    const provider = async (): Promise<Eip1193 | undefined> => {
-        if (connector !== undefined) return (await connector.getProvider()) as Eip1193;
-        return (window as unknown as { ethereum?: Eip1193 }).ethereum;
-    };
+    // The Portal never connects a wallet: the buttons talk to the browser's own wallet (an extension, or a wallet
+    // app's browser) when there is one, and ask nothing of anyone else. Which network that wallet is on is only read.
+    const provider = async (): Promise<Eip1193 | undefined> => browserWallet();
+    const [chainId, setChainId] = useState<number | undefined>(undefined);
+    useEffect(() => {
+        const wallet = browserWallet();
+        if (wallet === undefined) return;
+        const set = (value: unknown) => setChainId(typeof value === "string" ? Number.parseInt(value, 16) : undefined);
+        void wallet.request({ method: "eth_chainId" } as never).then(set, () => undefined);
+        wallet.on?.("chainChanged", set);
+        return () => wallet.removeListener?.("chainChanged", set);
+    }, []);
 
     const shown = NETWORKS.filter((network) => network.testnet === testPage);
 

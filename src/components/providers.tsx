@@ -1,19 +1,10 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState, type ReactNode } from "react";
-import { WagmiProvider } from "wagmi";
+import type { ReactNode } from "react";
 
-import { wagmiConfig } from "../lib/wagmi";
 import { LocaleProvider } from "./locale";
 
+/** The Portal holds no wallet connection: the only state shared by every page is the reader's language. */
 export function Providers({ children }: { children: ReactNode }) {
-    const [queryClient] = useState(() => new QueryClient());
-    return (
-        <LocaleProvider>
-            <WagmiProvider config={wagmiConfig}>
-                <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-            </WagmiProvider>
-        </LocaleProvider>
-    );
+    return <LocaleProvider>{children}</LocaleProvider>;
 }

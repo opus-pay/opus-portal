@@ -14,13 +14,10 @@
         "formatting:write": "prettier '**/*.{json,ts,tsx,css}' --write"
     },
     "dependencies": {
-        "@tanstack/react-query": "^5.104.0",
-        "@walletconnect/ethereum-provider": "^2.21.1",
         "next": "^16.3.7",
         "react": "^19.3.0",
         "react-dom": "^19.3.0",
-        "viem": "^2.37.5",
-        "wagmi": "^3.7.7"
+        "viem": "^2.37.5"
     },
     "devDependencies": {
         "@tailwindcss/postcss": "^4.3.3",
