@@ -2,38 +2,62 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
-import { LOCALE_NAMES, LOCALES, initialLocale, isLocale, translate, type Locale, type MessageKey } from "../lib/i18n";
+import {
+    LOCALE_NAMES,
+    LOCALES,
+    choiceCookie,
+    initialLocale,
+    isLocale,
+    readCookie,
+    translate,
+    type Locale,
+    type MessageKey,
+} from "../lib/i18n";
 
-const STORAGE_KEY = "opus.portal.locale";
+const COOKIE = "opus_locale";
 
 const LocaleContext = createContext<{ locale: Locale; setLocale: (locale: Locale) => void }>({
     locale: "en",
     setLocale: () => undefined,
 });
 
-/** Starts from the language chosen last time, else English, and keeps `<html lang>` in step. */
+/**
+ * Starts from `?lang=` in the address, else the language chosen last time (a cookie), else the browser's own language
+ * if the site has it, else English, and keeps `<html lang>` in step. A choice is remembered for a year.
+ */
 export function LocaleProvider({ children }: { children: ReactNode }) {
     const [locale, setState] = useState<Locale>("en");
-    useEffect(() => {
-        let saved: string | null = null;
+    const remember = useCallback((value: Locale) => {
         try {
-            saved = window.localStorage.getItem(STORAGE_KEY);
+            document.cookie = choiceCookie(COOKIE, value, window.location.protocol === "https:");
         } catch {
-            saved = null;
+            // Cookies may be refused; the choice still holds for this visit.
         }
-        setState(initialLocale(saved));
     }, []);
+    useEffect(() => {
+        let fromUrl: string | null = null;
+        let saved: string | null = null;
+        let browser: readonly string[] = [];
+        try {
+            fromUrl = new URLSearchParams(window.location.search).get("lang");
+            saved = readCookie(document.cookie, COOKIE);
+            browser = navigator.languages?.length ? navigator.languages : [navigator.language];
+        } catch {
+            // No cookies and no browser list: English.
+        }
+        setState(initialLocale(fromUrl, saved, browser));
+        if (isLocale(fromUrl)) remember(fromUrl);
+    }, [remember]);
     useEffect(() => {
         document.documentElement.lang = locale === "zh" ? "zh-Hans" : locale;
     }, [locale]);
-    const setLocale = useCallback((next: Locale) => {
-        setState(next);
-        try {
-            window.localStorage.setItem(STORAGE_KEY, next);
-        } catch {
-            // A private window may refuse storage; the choice still holds for this visit.
-        }
-    }, []);
+    const setLocale = useCallback(
+        (next: Locale) => {
+            setState(next);
+            remember(next);
+        },
+        [remember]
+    );
     const value = useMemo(() => ({ locale, setLocale }), [locale, setLocale]);
     return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
 }

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { LOCALES, MESSAGES, initialLocale, translate } from "../src/lib/i18n";
+import { LOCALES, MESSAGES, choiceCookie, initialLocale, readCookie, translate } from "../src/lib/i18n";
 
 const slots = (text: string) => (text.match(/\{\w+\}/g) ?? []).sort().join(",");
 
@@ -27,13 +27,27 @@ describe("translations", () => {
         expect(translate("ko", "card.go")).to.contain("{name}");
     });
 
-    it("starts in English, or in the language the reader chose last time", () => {
-        expect(initialLocale(null)).to.equal("en");
-        expect(initialLocale(undefined)).to.equal("en");
-        expect(initialLocale("ko")).to.equal("ko");
-        expect(initialLocale("zh")).to.equal("zh");
-        // A value that is not a language of the site (an old or edited entry) falls back to English.
-        expect(initialLocale("fr")).to.equal("en");
-        expect(initialLocale("")).to.equal("en");
+    it("starts in the address's language, else the last choice, else the browser's, else English", () => {
+        expect(initialLocale("ko", "ja", ["zh-CN"])).to.equal("ko");
+        expect(initialLocale(null, "ja", ["zh-CN"])).to.equal("ja");
+        expect(initialLocale(null, null, ["fr-FR", "ko-KR"])).to.equal("ko");
+        expect(initialLocale(null, null, ["zh-TW"])).to.equal("zh");
+        expect(initialLocale(null, null, ["de"])).to.equal("en");
+        expect(initialLocale(null, null)).to.equal("en");
+        expect(initialLocale(undefined, undefined, [])).to.equal("en");
+        // A value that is not a language of the site (an old or edited entry) is ignored, so the next step decides.
+        expect(initialLocale("fr", "de", ["ja"])).to.equal("ja");
+        expect(initialLocale("", "", [])).to.equal("en");
+    });
+
+    it("keeps the chosen language in a cookie that is read back", () => {
+        const text = choiceCookie("opus_locale", "ko", true);
+        expect(text).to.contain("opus_locale=ko").and.to.contain("Path=/").and.to.contain("SameSite=Lax");
+        expect(text).to.contain("Secure").and.to.contain("Max-Age=31536000");
+        expect(choiceCookie("opus_locale", "ko", false)).to.not.contain("Secure");
+        expect(readCookie("a=1; opus_locale=ja; b=2", "opus_locale")).to.equal("ja");
+        expect(readCookie("a=1", "opus_locale")).to.equal(null);
+        expect(readCookie("opus_locale=%E0%A4%A", "opus_locale")).to.equal(null);
+        expect(readCookie("xopus_locale=ja", "opus_locale")).to.equal(null);
     });
 });

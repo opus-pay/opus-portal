@@ -12,8 +12,50 @@ export const isLocale = (value: unknown): value is Locale => (LOCALES as readonl
 
 export const DEFAULT_LOCALE: Locale = "en";
 
-/** The language to start in: the one the reader chose last time, else English (not the browser's language). */
-export const initialLocale = (saved: string | null | undefined): Locale => (isLocale(saved) ? saved : DEFAULT_LOCALE);
+/** The first language in the browser's list that the site has (`zh-TW` and `zh-CN` both give Chinese), else English. */
+export function pickLocale(languages: readonly string[]): Locale {
+    for (const tag of languages) {
+        const base = tag.toLowerCase().split("-")[0];
+        if (isLocale(base)) return base;
+    }
+    return DEFAULT_LOCALE;
+}
+
+/**
+ * The language to start in, in this order: `?lang=` in the address, the one the reader chose last time (a cookie),
+ * the browser's own language if the site has it, English. The same rule as the mini-app standard.
+ */
+export function initialLocale(
+    fromUrl: string | null | undefined,
+    saved: string | null | undefined,
+    browser: readonly string[] = []
+): Locale {
+    if (isLocale(fromUrl)) return fromUrl;
+    if (isLocale(saved)) return saved;
+    return pickLocale(browser);
+}
+
+/** The value of a cookie in a `document.cookie` string, or `null`. */
+export function readCookie(cookies: string, name: string): string | null {
+    for (const part of cookies.split(";")) {
+        const at = part.indexOf("=");
+        if (at > 0 && part.slice(0, at).trim() === name) {
+            try {
+                return decodeURIComponent(part.slice(at + 1).trim());
+            } catch {
+                return null;
+            }
+        }
+    }
+    return null;
+}
+
+/** The cookie text that remembers the choice for a year on every page: a preference of this browser, `Secure` on https. */
+export function choiceCookie(name: string, value: string, secure: boolean): string {
+    return `${name}=${encodeURIComponent(value)}; Path=/; Max-Age=${365 * 24 * 60 * 60}; SameSite=Lax${
+        secure ? "; Secure" : ""
+    }`;
+}
 
 const en = {
     "brand.tagline": "Services built on OPUS escrow",
