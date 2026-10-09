@@ -103,14 +103,25 @@ function Arrow({ compact }: { compact: boolean }) {
  * The four words and the map of where the money goes. `note` is shown under the map (for example: this is a test
  * network). `compact` stacks the map top to bottom at every width, for a narrow column.
  */
-export function Concepts({ note, compact = false }: { note?: ReactNode; compact?: boolean }) {
+export function Concepts({
+    note,
+    compact = false,
+    untitled = false,
+}: {
+    note?: ReactNode;
+    compact?: boolean;
+    /** The page already shows the title (for example as the title of a closed item): leave it out here. */
+    untitled?: boolean;
+}) {
     const { t } = useLocale();
     return (
-        <section aria-labelledby="concept-title" className="flex flex-col gap-4">
+        <section aria-labelledby={untitled ? undefined : "concept-title"} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-                <h2 id="concept-title" className="m-0 text-[22px] font-bold">
-                    {t("concept.title")}
-                </h2>
+                {!untitled && (
+                    <h2 id="concept-title" className="m-0 text-[22px] font-bold">
+                        {t("concept.title")}
+                    </h2>
+                )}
                 <p className="m-0 text-[15px] leading-relaxed text-ink-soft">{t("concept.intro")}</p>
             </div>
 
