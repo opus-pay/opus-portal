@@ -22,8 +22,8 @@ jobs:
               run: yarn build
               env:
                   NEXT_PUBLIC_WAYHAND_URL: ""
-            - name: The built page links WayHand and links WayHand at www.wayhand.app and shows the eight planned services as closed boxes
+            - name: The built page links WayHand and links WayHand at www.wayhand.app and shows the two planned services as closed boxes
               run: |
                   test -f out/index.html
                   grep -q 'href="https://www.wayhand.app/?lang=en"' out/index.html
-                  test "$(grep -o 'aria-disabled="true"' out/index.html | wc -l)" = 8
+                  test "$(grep -o 'aria-disabled="true"' out/index.html | wc -l)" = 2
