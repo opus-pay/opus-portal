@@ -32,7 +32,7 @@ function fakeWallet(replies: Record<string, unknown[]>) {
 const coded = (code: number) => Object.assign(new Error(`code ${code}`), { code });
 
 describe("network information", () => {
-    it("lists Polygon and Polygon Amoy, the two chains the wallet config (src/lib/wagmi.ts) knows", () => {
+    it("lists Polygon and Polygon Amoy, the two chains OPUS uses", () => {
         expect(NETWORKS.map((n) => n.chainId)).to.deep.equal([137, 80002]);
         expect(NETWORKS.map((n) => n.testnet)).to.deep.equal([false, true]);
     });
@@ -143,12 +143,5 @@ describe("the wrong-network warning", () => {
         expect(isUnsupportedChain(undefined)).to.equal(false);
         expect(networkOf(137)?.name).to.equal("Polygon");
         expect(networkOf(1)).to.equal(undefined);
-    });
-
-    it("says in every language what is wrong and keeps the chain id slot", () => {
-        for (const locale of LOCALES) {
-            const m = MESSAGES[locale];
-            expect(m["network.warn.text"], locale).to.contain("{chainId}").and.to.contain("Polygon");
-        }
     });
 });

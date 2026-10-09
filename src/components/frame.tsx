@@ -5,10 +5,8 @@ import type { ReactNode } from "react";
 import { Footer } from "./footer";
 import { LanguageSelect, useLocale } from "./locale";
 import { Logo } from "./logo";
-import { NetworkWarning } from "./network-warning";
-import { WalletButton } from "./wallet-button";
 
-/** The header (name, language, wallet) and the footer shared by every page. */
+/** The header (name, language) and the footer shared by every page. */
 export function Frame({ children }: { children: ReactNode }) {
     const { t } = useLocale();
     return (
@@ -20,11 +18,9 @@ export function Frame({ children }: { children: ReactNode }) {
                     </a>
                     <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
                         <LanguageSelect />
-                        <WalletButton />
                     </div>
                 </div>
             </header>
-            <NetworkWarning />
             {children}
             <Footer />
         </div>

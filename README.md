@@ -1,10 +1,10 @@
 # opus-portal
 
-**OPUS Portal**: OPUS 에스크로 위에서 만든 서비스를 모아 보여 주는 사이트입니다. 서비스를 나열하고 지갑을 연결할 뿐, **사람을 연결하지도 돈을 맡지도 않습니다** (결정 D24).
+**OPUS Portal**: OPUS 에스크로 위에서 만든 서비스를 모아 보여 주는 사이트입니다. 서비스를 나열할 뿐, **사람을 연결하지도 돈을 맡지도 않습니다** (결정 D24).
 
 ```
 ┌──────────────────────────────────────────────┐
-│ OPUS                     [언어] [지갑 연결]  │  ← 위: WalletConnect
+│ OPUS                              [언어]     │  ← 위
 ├──────────────────────────────────────────────┤
 │                                              │
 │   OPUS 위에서 만든 서비스                    │
@@ -37,10 +37,9 @@ Node 22 이상이 필요합니다.
 서버 코드가 없는 정적 사이트(`out/`)라서 어느 호스팅이든 올릴 수 있습니다. 주소는 `https://www.opusportal.org`입니다. 아래는 Cloudflare Pages에 올리는 예입니다 (비공개 저장소도 무료로 됩니다).
 
 1.  Cloudflare Pages에서 이 저장소를 연결하고 빌드 명령은 `yarn build`, 출력 폴더는 `out`, Node 버전은 22로 정합니다.
-2.  빌드 환경 변수에 `NEXT_PUBLIC_SITE_URL=https://www.opusportal.org`, `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`를 넣습니다.
+2.  빌드 환경 변수에 `NEXT_PUBLIC_SITE_URL=https://www.opusportal.org`를 넣습니다.
 3.  Pages 프로젝트의 사용자 지정 도메인에 `www.opusportal.org`를 추가합니다 (DNS를 Cloudflare가 관리하면 레코드가 자동으로 만들어집니다).
 4.  `opusportal.org`(www 없는 주소)는 `https://www.opusportal.org`로 넘어가게 리다이렉트 규칙(301)을 만듭니다. `opusescrow.org`를 등록했다면 같은 방식으로 넘깁니다.
-5.  [Reown](https://cloud.reown.com) 프로젝트의 허용 주소 목록에 `https://www.opusportal.org`를 추가합니다.
 
 주소를 바꾸면 OPUS 앱(`EXPO_PUBLIC_PORTAL_URL`), 공통 UI 키트(`DEFAULT_PORTAL_URL`), 웨이핸드(`NEXT_PUBLIC_PORTAL_URL`)의 기본값도 함께 바꿉니다.
 
@@ -48,7 +47,6 @@ Node 22 이상이 필요합니다.
 
 | 설정                                   | 뜻                                                                                                                                              |
 | :------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` | [cloud.reown.com](https://cloud.reown.com)에서 무료로 받는 프로젝트 ID. 비우면 브라우저 지갑만 됩니다. 허용 주소 목록에 사이트 주소를 넣으세요. |
 | `NEXT_PUBLIC_SITE_URL`                 | 이 사이트의 주소 (지갑에 표시됨)                                                                                                                |
 | `NEXT_PUBLIC_WAYHAND_URL`              | WayHand의 주소. 비우면 `https://www.wayhand.app`입니다.                                                                                             |
 | `NEXT_PUBLIC_GITHUB_URL`               | 아래쪽 GitHub 링크 (기본 `https://github.com/opus-pay`)                                                                                         |
@@ -61,14 +59,13 @@ Node 22 이상이 필요합니다.
 | 서비스를 "열림"으로 바꾸기                | `status: "active"`와 주소(`href`). 주소가 http(s)가 아니면(`#` 포함) 열리지 않습니다.                                                                                                |
 | 문구                                      | `src/lib/i18n.ts` (en/ko/ja/zh는 같은 키와 같은 `{슬롯}`을 가져야 하며 테스트가 검사)                                                                                                |
 | 아래 링크                                 | `src/lib/links.ts`                                                                                                                                                                   |
-| 지갑                                      | `src/lib/wagmi.ts`, `src/components/wallet-button.tsx`                                                                                                                               |
 | 네트워크·USDC 정보와 지갑에 추가하는 버튼 | `app/network`, `src/components/networks.tsx`, `src/lib/networks.ts`(네트워크·주소 값), `src/lib/wallet-actions.ts`(지갑 요청). 주소 값은 공식 자료로 확인하고 체크섬 철자로 적습니다 |
 | 입출금 가이드(거래소 링크·그림)           | `app/guide`, `src/components/guide.tsx`, `src/lib/guide.ts` (거래소·단계), 문구는 `i18n.ts`의 `guide.*`·`flow.*`·`arrow.*`                                                           |
 
-## 지갑 연결에 대해
+## 지갑에 대해
 
--   **연결만 합니다.** 서명도 거래도 요청하지 않고, 연결하면 주소만 보입니다. (네트워크 페이지의 버튼은 사용자가 누를 때만 지갑에 네트워크 추가·전환과 USDC 표시를 요청하며, 돈이 움직이지 않습니다.) 이후 "내 작업(여러 서비스에 걸쳐)"(#64) 같은 화면이 이 주소로 체인을 읽게 됩니다.
--   브라우저 지갑과 WalletConnect가 모두 있으면 메뉴에서 고르고, 하나뿐이면 바로 연결합니다. 체인은 Polygon과 Polygon Amoy입니다.
+-   **포털에는 지갑 연결이 없습니다.** 서명도 거래도 요청하지 않고 주소도 보지 않습니다. 지갑 연결은 WayHand 같은 서비스에서 합니다. (네트워크 페이지의 버튼은 사용자가 누를 때만 **그 브라우저의 지갑**(`window.ethereum`)에 네트워크 추가·전환과 USDC 표시를 요청하며, 돈이 움직이지 않습니다. 휴대폰 일반 브라우저처럼 지갑이 없으면 버튼이 안내만 하고, 값은 복사해서 직접 넣으면 됩니다.)
+-   체인은 Polygon과 Polygon Amoy입니다.
 
 ## 서비스는 어떻게 목록에 오르나
 
