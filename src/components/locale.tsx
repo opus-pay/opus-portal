@@ -24,7 +24,7 @@ const LocaleContext = createContext<{ locale: Locale; setLocale: (locale: Locale
 
 /**
  * Starts from `?lang=` in the address, else the language chosen last time (a cookie), else the browser's own language
- * if the site has it, else English, and keeps `<html lang>` in step. A choice is remembered for a year.
+ * if the site has it, else English, and keeps `<html lang>` in step. A choice made in the language menu is remembered for a year; a language that arrives in the address is used for that visit only.
  */
 export function LocaleProvider({ children }: { children: ReactNode }) {
     const [locale, setState] = useState<Locale>("en");
@@ -55,9 +55,9 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
         } catch {
             // No cookies and no browser list: English.
         }
+        // A language in the address is for this visit only; only a choice made in the language menu is remembered.
         setState(initialLocale(fromUrl, saved, browser));
-        if (isLocale(fromUrl)) remember(fromUrl);
-    }, [remember]);
+    }, []);
     useEffect(() => {
         document.documentElement.lang = locale === "zh" ? "zh-Hans" : locale;
     }, [locale]);
