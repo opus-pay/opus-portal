@@ -22,7 +22,7 @@ export const FLOWS: Record<"gate" | "upbit" | "out", Flow> = {
         id: "gate",
         nodes: [
             { title: "flow.exchange", sub: "flow.exchange.sub" },
-            { title: "flow.app", sub: "flow.app.sub" },
+            { title: "flow.wallet", sub: "flow.wallet.sub" },
             { title: "flow.service", sub: "flow.service.sub" },
         ],
         arrows: ["arrow.withdraw", "arrow.pay"],
@@ -33,23 +33,15 @@ export const FLOWS: Record<"gate" | "upbit" | "out", Flow> = {
         nodes: [
             { title: "flow.upbit", sub: "flow.upbit.sub" },
             { title: "flow.registered", sub: "flow.registered.sub" },
-            { title: "flow.app", sub: "flow.app.sub" },
             { title: "flow.service", sub: "flow.service.sub" },
         ],
-        arrows: ["arrow.withdrawRegistered", "arrow.sendApp", "arrow.pay"],
-        steps: [
-            "guide.upbit.s1",
-            "guide.upbit.s2",
-            "guide.upbit.s3",
-            "guide.upbit.s4",
-            "guide.upbit.s5",
-            "guide.upbit.s6",
-        ],
+        arrows: ["arrow.withdrawRegistered", "arrow.pay"],
+        steps: ["guide.upbit.s1", "guide.upbit.s2", "guide.upbit.s3", "guide.upbit.s4"],
     },
     out: {
         id: "out",
         nodes: [
-            { title: "flow.app", sub: "flow.app.sub" },
+            { title: "flow.wallet", sub: "flow.wallet.sub" },
             { title: "flow.deposit", sub: "flow.deposit.sub" },
         ],
         arrows: ["arrow.sendBack"],

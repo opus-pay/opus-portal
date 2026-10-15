@@ -26,7 +26,7 @@ describe("exchange guide", () => {
             expect(m["guide.need.pol.body"], locale).to.contain("POL");
             expect(m["guide.home.desc"], locale).to.contain("POL");
             expect(m["guide.safety.network"], locale).to.contain("Polygon");
-            expect(m["arrow.sendApp"], locale).to.contain("POL");
+            expect(m["arrow.sendBack"], locale).to.contain("POL");
         }
     });
 

@@ -41,7 +41,7 @@ Node 22 이상이 필요합니다.
 3.  Pages 프로젝트의 사용자 지정 도메인에 `www.opusportal.org`를 추가합니다 (DNS를 Cloudflare가 관리하면 레코드가 자동으로 만들어집니다).
 4.  `opusportal.org`(www 없는 주소)는 `https://www.opusportal.org`로 넘어가게 리다이렉트 규칙(301)을 만듭니다. `opusescrow.org`를 등록했다면 같은 방식으로 넘깁니다.
 
-주소를 바꾸면 OPUS 앱(`EXPO_PUBLIC_PORTAL_URL`), 공통 UI 키트(`DEFAULT_PORTAL_URL`), 웨이핸드(`NEXT_PUBLIC_PORTAL_URL`)의 기본값도 함께 바꿉니다.
+주소를 바꾸면 공통 UI 키트(`DEFAULT_PORTAL_URL`), 웨이핸드(`NEXT_PUBLIC_PORTAL_URL`)의 기본값도 함께 바꿉니다.
 
 ## 설정 (`.env.local`, 빌드할 때 읽힘, 비밀이 아님)
 
