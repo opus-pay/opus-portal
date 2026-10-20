@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "OPUS Portal: a directory of services built on the OPUS escrow. It lists services and connects a wallet; it matches no one and holds no money.",
     "private": true,
-    "license": "UNLICENSED",
+    "license": "MIT",
     "scripts": {
         "dev": "next dev --port 3200",
         "build": "next build",
