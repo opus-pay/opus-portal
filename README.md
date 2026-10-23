@@ -1,92 +1,94 @@
 # opus-portal
 
-**OPUS Portal**: OPUS 에스크로 위에서 만든 서비스를 모아 보여 주는 사이트입니다. 서비스를 나열할 뿐, **사람을 연결하지도 돈을 맡지도 않습니다** (결정 D24).
+English · [한국어](README.ko.md)
+
+**OPUS Portal** is a site that gathers the services built on OPUS escrow. It only lists them: it **does not connect people and does not hold money** (decision D24).
 
 ```
 ┌──────────────────────────────────────────────┐
-│ OPUS                              [언어]     │  ← 위
+│ OPUS                           [Language]    │  ← top
 ├──────────────────────────────────────────────┤
 │                                              │
-│   OPUS 위에서 만든 서비스                    │
-│   ┌────────┐ ┌────────┐ ┌────────┐           │  ← 가운데: 서비스
-│   │WayHand │ │OPUS    │ │OPUS    │           │     WayHand는 링크,
-│   │ 이용   │ │Tour    │ │Code    │           │     나머지 2개는 준비 중
-│   └────────┘ └────────┘ └────────┘           │     (선택되지 않음)
+│   Services built on OPUS                     │
+│   ┌────────┐ ┌────────┐ ┌────────┐           │  ← middle: services
+│   │WayHand │ │OPUS    │ │OPUS    │           │     WayHand is a link,
+│   │ Open   │ │Tour    │ │Code    │           │     the other two are coming
+│   └────────┘ └────────┘ └────────┘           │     soon (not selectable)
 │                                              │
 ├──────────────────────────────────────────────┤
-│        아키텍처   GitHub                     │  ← 아래: 링크
+│        Architecture   GitHub                 │  ← bottom: links
 └──────────────────────────────────────────────┘
 ```
 
-정적 사이트입니다 (`next build`가 `out/`을 만듭니다). 서버 코드가 없어서 키나 사용자 데이터를 가질 수 없고, 어떤 파일 호스팅이나 IPFS 미러로도 올릴 수 있습니다 (ROADMAP #66).
+It is a static site (`next build` produces `out/`). It has no server code, so it can hold no keys or user data, and it can be put on any file host or an IPFS mirror (ROADMAP #66).
 
-## 실행
+## Run it
 
 ```bash
 yarn install
-cp .env.sample .env.local     # 값을 채웁니다
+cp .env.sample .env.local     # fill in the values
 yarn dev                      # http://localhost:3200
 yarn test && yarn lint && yarn formatting:check
 yarn build                    # out/
 ```
 
-Node 22 이상이 필요합니다.
+Node 22 or later is required.
 
-## 올리는 곳 (www.opusportal.org)
+## Where it is hosted (www.opusportal.org)
 
-서버 코드가 없는 정적 사이트(`out/`)라서 어느 호스팅이든 올릴 수 있습니다. 주소는 `https://www.opusportal.org`입니다. 아래는 Cloudflare Pages에 올리는 예입니다 (비공개 저장소도 무료로 됩니다).
+Because it is a static site (`out/`) with no server code, any host works. The address is `https://www.opusportal.org`. Below is an example on Cloudflare Pages.
 
-1.  Cloudflare Pages에서 이 저장소를 연결하고 빌드 명령은 `yarn build`, 출력 폴더는 `out`, Node 버전은 22로 정합니다.
-2.  빌드 환경 변수에 `NEXT_PUBLIC_SITE_URL=https://www.opusportal.org`를 넣습니다.
-3.  Pages 프로젝트의 사용자 지정 도메인에 `www.opusportal.org`를 추가합니다 (DNS를 Cloudflare가 관리하면 레코드가 자동으로 만들어집니다).
-4.  `opusportal.org`(www 없는 주소)는 `https://www.opusportal.org`로 넘어가게 리다이렉트 규칙(301)을 만듭니다. `opusescrow.org`를 등록했다면 같은 방식으로 넘깁니다.
+1.  In Cloudflare Pages, connect this repository, set the build command to `yarn build`, the output folder to `out` and the Node version to 22.
+2.  Put `NEXT_PUBLIC_SITE_URL=https://www.opusportal.org` in the build environment variables.
+3.  Add `www.opusportal.org` as a custom domain of the Pages project (if Cloudflare manages the DNS, the record is made for you).
+4.  Make a redirect rule (301) from `opusportal.org` (without www) to `https://www.opusportal.org`. If you registered `opusescrow.org`, send it the same way.
 
-주소를 바꾸면 공통 UI 키트(`DEFAULT_PORTAL_URL`), 웨이핸드(`NEXT_PUBLIC_PORTAL_URL`)의 기본값도 함께 바꿉니다.
+If the address changes, change it too in the shared UI kit (`DEFAULT_PORTAL_URL`) and in the services that use the Portal address as their default (for example WayHand's `NEXT_PUBLIC_PORTAL_URL`).
 
-## 설정 (`.env.local`, 빌드할 때 읽힘, 비밀이 아님)
+## Settings (`.env.local`, read at build time, not secret)
 
-| 설정                      | 뜻                                                      |
-| :------------------------ | :------------------------------------------------------ |
-| `NEXT_PUBLIC_SITE_URL`    | 이 사이트의 주소 (지갑에 표시됨)                        |
-| `NEXT_PUBLIC_WAYHAND_URL` | WayHand의 주소. 비우면 `https://www.wayhand.app`입니다. |
-| `NEXT_PUBLIC_GITHUB_URL`  | 아래쪽 GitHub 링크 (기본 `https://github.com/opus-pay`) |
+| Setting                   | Meaning                                                               |
+| :------------------------ | :-------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`    | The address of this site (shown in the wallet)                        |
+| `NEXT_PUBLIC_WAYHAND_URL` | The address of WayHand. Empty means `https://www.wayhand.app`.        |
+| `NEXT_PUBLIC_GITHUB_URL`  | The GitHub link at the bottom (default `https://github.com/opus-pay`) |
 
-## 어디를 고치나
+## Where to change what
 
-| 하고 싶은 일                              | 파일                                                                                                                                                                                 |
-| :---------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 서비스 추가·열기                          | `src/lib/services.ts`에 한 줄(이름은 브랜드라 번역하지 않음), 설명은 `src/lib/i18n.ts` (4개 언어 모두)                                                                               |
-| 서비스를 "열림"으로 바꾸기                | `status: "active"`와 주소(`href`). 주소가 http(s)가 아니면(`#` 포함) 열리지 않습니다.                                                                                                |
-| 문구                                      | `src/lib/i18n.ts` (en/ko/ja/zh는 같은 키와 같은 `{슬롯}`을 가져야 하며 테스트가 검사)                                                                                                |
-| 아래 링크                                 | `src/lib/links.ts`                                                                                                                                                                   |
-| 네트워크·USDC 정보와 지갑에 추가하는 버튼 | `app/network`, `src/components/networks.tsx`, `src/lib/networks.ts`(네트워크·주소 값), `src/lib/wallet-actions.ts`(지갑 요청). 주소 값은 공식 자료로 확인하고 체크섬 철자로 적습니다 |
-| 입출금 가이드(거래소 링크·그림)           | `app/guide`, `src/components/guide.tsx`, `src/lib/guide.ts` (거래소·단계), 문구는 `i18n.ts`의 `guide.*`·`flow.*`·`arrow.*`                                                           |
+| To do this                                                  | File                                                                                                                                                                                                                               |
+| :---------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Add or open a service                                       | One line in `src/lib/services.ts` (the name is a brand, so it is not translated); the description in `src/lib/i18n.ts` (all four languages)                                                                                        |
+| Turn a service to "open"                                    | `status: "active"` and an address (`href`). If the address is not http(s) (a `#` counts), it does not open.                                                                                                                        |
+| Text                                                        | `src/lib/i18n.ts` (en/ko/ja/zh must have the same keys and the same `{slots}`; a test checks it)                                                                                                                                   |
+| The links at the bottom                                     | `src/lib/links.ts`                                                                                                                                                                                                                 |
+| Network and USDC information, the add-to-wallet buttons     | `app/network`, `src/components/networks.tsx`, `src/lib/networks.ts` (network and address values), `src/lib/wallet-actions.ts` (wallet requests). Check address values against official sources and write them in checksum spelling |
+| The deposit and withdrawal guide (exchange links, pictures) | `app/guide`, `src/components/guide.tsx`, `src/lib/guide.ts` (exchanges, steps); the text is `guide.*`, `flow.*` and `arrow.*` in `i18n.ts`                                                                                         |
 
-## 지갑에 대해
+## About wallets
 
--   **포털에는 지갑 연결이 없습니다.** 서명도 거래도 요청하지 않고 주소도 보지 않습니다. 지갑 연결은 WayHand 같은 서비스에서 합니다. (네트워크 페이지의 버튼은 사용자가 누를 때만 **그 브라우저의 지갑**(`window.ethereum`)에 네트워크 추가·전환과 USDC 표시를 요청하며, 돈이 움직이지 않습니다. 휴대폰 일반 브라우저처럼 지갑이 없으면 버튼이 안내만 하고, 값은 복사해서 직접 넣으면 됩니다.)
--   체인은 Polygon과 Polygon Amoy입니다.
+-   **The Portal has no wallet connection.** It asks for no signature and no transaction, and does not see an address. Connecting a wallet is done in a service such as WayHand. (The buttons on the network page ask **the browser's own wallet** (`window.ethereum`) to add or switch a network and to show USDC only when the user presses them; no money moves. Where there is no wallet, such as an ordinary phone browser, the button only explains, and the values can be copied by hand.)
+-   The chains are Polygon and Polygon Amoy.
 
-## 서비스는 어떻게 목록에 오르나
+## How a service gets listed
 
-**문의와 계약으로만 오릅니다 (D23, 2026-10-07 결정).** 체인에서 자동으로 읽거나 누구나 등록하는 방식은 쓰지 않습니다. 열린 등록은 스팸, 진짜 서비스를 베낀 가짜, 사기를 막지 못하기 때문입니다.
+**Only by contact and agreement (D23, decided 2026-10-07).** Neither reading services from the chain automatically nor letting anyone register is used. An open registry cannot stop spam, fakes that copy a real service, or scams.
 
-1. 서비스 쪽이 운영자에게 연락합니다 (화면에 문의 버튼은 두지 않았습니다).
-2. 운영자가 누가 운영하는지, 인스턴스 주소, 하는 일을 확인하고 조건에 합의합니다.
-3. 합의한 서비스를 `src/lib/services.ts`에 한 항목으로 더하는 PR을 올립니다. 모든 변경이 공개 기록으로 남습니다.
-4. 서비스가 수정이나 삭제를 요청할 수 있고, 운영자는 노출 정책(#66)에 따라 내릴 수 있습니다.
+1. The service contacts the operator (there is no contact button on the screen).
+2. The operator checks who runs it, its instance address and what it does, and agrees terms.
+3. A pull request adds the agreed service as one entry in `src/lib/services.ts`. Every change stays in the public record.
+4. A service can ask for a change or removal, and the operator may take a service down under the display policy (#66).
 
-## 원칙
+## Principles
 
--   **중립:** 서비스를 나열할 뿐 순위를 사지 않고, 팀 서비스를 고정하지 않습니다 (ROADMAP #63). 노출 정책과 신고 처리는 #66에서 정합니다.
--   **준비 중인 서비스는 선택되지 않습니다.** 포커스도 클릭도 텍스트 선택도 안 되고, 화면 읽기 도구에는 "아직 공개되지 않았습니다"로 읽힙니다.
--   **아키텍처는 이 사이트 안의 문서입니다** (`/architecture/`). 제목을 누르면 내용이 열리는 항목 9개와 시퀀스 다이어그램 6개이고, 글은 `src/lib/architecture-text.ts`(4개 언어), 구성은 `src/lib/architecture.ts`에 있습니다. 백서 링크는 일단 뺐습니다.
--   **안내(가이드) 페이지**는 중요한 것(폴리곤 경고, 지갑에 필요한 것)만 먼저 보이고 나머지는 제목을 눌러야 열립니다.
+-   **Neutral:** it lists services, sells no ranking and pins no team service (ROADMAP #63). The display policy and handling of reports are set in #66.
+-   **A service that is not open yet cannot be selected.** It takes no focus, no click and no text selection, and a screen reader reads it as "not published yet".
+-   **The architecture is a document inside this site** (`/architecture/`): nine sections that open when you press the title, and six sequence diagrams. The text is in `src/lib/architecture-text.ts` (four languages) and the structure in `src/lib/architecture.ts`. The whitepaper link is left out for now.
+-   **The guide pages** show only the important things first (the Polygon warning, what a wallet needs); the rest opens when you press the title.
 
-## 아직 안 한 것
+## Not done yet
 
-등록 조건 문서와 노출 정책(#62, #66), 등록된 서비스의 온체인 통계(#63), 내 작업(#64), 평가자·중재인 목록(#65), 노출 정책과 IPFS 미러(#66). 지금은 목록을 코드에 적어 두는 첫 화면입니다.
+The listing terms and display policy (#62, #66), on-chain statistics for registered services (#63), my jobs (#64), the evaluator and arbiter list (#65), the display policy and an IPFS mirror (#66). For now it is a first screen with the list written in code.
 
-## 라이선스
+## License
 
-MIT. [LICENSE](LICENSE)를 보세요.
+MIT. See [LICENSE](LICENSE).
