@@ -52,8 +52,9 @@ describe("network information", () => {
         }
         // the lookalike must never be the token we tell people to use
         expect(mainnet.lookalike?.address).to.not.equal(mainnet.usdc.address);
-        // nothing is deployed on the main network yet, so the page says so
-        expect(mainnet.contracts).to.equal(null);
+        // the main network deployment of 2026-10-23
+        expect(mainnet.contracts?.factory).to.equal("0xf564509aF5e8846087a7d3b5e4fEe5cd53cD3AA5");
+        expect(mainnet.contracts?.instance).to.equal("0xd293959476CBeb5a4271Fab6cE991Be5e51aAbf7");
         expect(amoy.contracts?.factory).to.equal("0x8Cae2EBe1b3D13e3EAf9Fc765a577dc30c6a5218");
     });
 
@@ -67,7 +68,7 @@ describe("network information", () => {
                     chainId: "0x89",
                     chainName: "Polygon",
                     nativeCurrency: { name: "POL", symbol: "POL", decimals: 18 },
-                    rpcUrls: ["https://polygon-rpc.com"],
+                    rpcUrls: ["https://polygon-bor-rpc.publicnode.com", "https://polygon.drpc.org"],
                     blockExplorerUrls: ["https://polygonscan.com"],
                 },
             ],

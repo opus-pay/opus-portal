@@ -30,11 +30,17 @@ export const NETWORKS: readonly Network[] = [
         chainId: 137,
         testnet: false,
         currency: { name: "POL", symbol: "POL", decimals: 18 },
-        rpcUrls: ["https://polygon-rpc.com"],
+        rpcUrls: ["https://polygon-bor-rpc.publicnode.com", "https://polygon.drpc.org"],
         explorer: "https://polygonscan.com",
         usdc: { name: "USD Coin", symbol: "USDC", decimals: 6, address: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359" },
         lookalike: { symbol: "USDC.e (USDC PoS)", address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174" },
-        contracts: null,
+        // Deployed 2026-10-23 (opus-osx packages/contracts/deploy/polygon/addresses.json), verified on Polygonscan.
+        contracts: {
+            factory: "0xf564509aF5e8846087a7d3b5e4fEe5cd53cD3AA5",
+            instance: "0xd293959476CBeb5a4271Fab6cE991Be5e51aAbf7",
+            evaluator: "0x33A27198F5920dFbfD6512506F06B60e28e2Eb04",
+            forwarder: "0x819e1e7e5779B24430125C529830B41Ed7F769d0",
+        },
         faucets: [],
     },
     {

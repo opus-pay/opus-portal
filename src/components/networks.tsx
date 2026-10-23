@@ -185,9 +185,9 @@ function NetworkCard({
                     <p className="m-0 text-[14px] text-muted">{t("network.contracts.none")}</p>
                 ) : (
                     <>
-                        {network.testnet && (
-                            <p className="m-0 text-[13.5px] text-muted">{t("network.contracts.test")}</p>
-                        )}
+                        <p className="m-0 text-[13.5px] text-muted">
+                            {t(network.testnet ? "network.contracts.test" : "network.contracts.unaudited")}
+                        </p>
                         <dl className="m-0">
                             {(Object.keys(network.contracts) as (keyof NonNullable<Network["contracts"]>)[]).map(
                                 (key) => (
